@@ -3,7 +3,6 @@ const app        = express();
 const mysql      = require("mysql");
 const cors       = require("cors");
 const path       = require("path");
-const uploaduser = require('./middlewares/uploadimage');
 
 const db = mysql.createPool({
   host: "suitesistemas.cbtdu4gfiiub.us-east-1.rds.amazonaws.com",
@@ -117,21 +116,6 @@ app.get("/paciente/listar", (req, res) => {
   db.query(SQL, (err, result) => {
     if (err) console.log(err);
     else res.send(result);
-  });
-});
-
-//Upload Imagem
-app.post("/upload-image", uploaduser.single('image'), async(req, res) => {
-  if (req.file) {
-    return res.json({
-      erro: false,
-      mensagem: "Upload realizado com sucesso!"
-    });  
-  }
-  
-  return res.status(400).json({
-    erro: true,
-    mensagem: "Erro: Upload não realizado, aceito tipos PNG, JPG, JPEG ou BMP!"
   });
 });
 
