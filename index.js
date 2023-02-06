@@ -20,7 +20,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(express.static('api/public')); //Libera acesso a pasta de imagens*/
+app.use(express.static('public/upload')); //Libera acesso a pasta de imagens*/
 
 app.use(cors());
 
