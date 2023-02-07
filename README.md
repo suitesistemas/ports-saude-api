@@ -102,7 +102,7 @@ git init
         
       Liberar a porta utilizada no servidor
         clique no item da coluna 'Security Groups' (final da grid)
-        se a opção estiver desabilitada significa siga os passos abaixo          
+        se a opção estiver desabilitada siga os passos abaixo          
           clique no id da instancia
           abra a aba segurança
           crie uma nova regra
@@ -110,7 +110,7 @@ git init
           informe a porta e o ip 000.000...
     
     Utilize a biblioteca pm2 para que o servidor fique rodando interupdatemente
-      abra a pasta raiz (cd até chegar lah) para instalar globla para todos projetos
+      abra a pasta raiz (cd até chegar lah) para instalar global para todos projetos
       sudo npm install pm2 -g
 
       verificar se o pm2 esa rodando use o comando:
