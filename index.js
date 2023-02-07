@@ -6,7 +6,7 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/colaborador/listar/:cod_pessoa", (req, res) => {    
-  return res.status(500).send(err);  
+  return res.status(200).send('servidor no ar');  
 });
 
 app.listen(3001, ()=>{
