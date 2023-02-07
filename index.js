@@ -12,13 +12,7 @@ const db = mysql.createPool({
   database: 'dados_ports_saude'
 });
 
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin",  "*");
-  res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
-  res.header("Access-Control-Allow-Headers", "X-PINGOTHER, Content-Type, Authorization");
 
-  next();
-});
 
 app.use(express.static('public/upload')); //Libera acesso a pasta de imagens*/
 
