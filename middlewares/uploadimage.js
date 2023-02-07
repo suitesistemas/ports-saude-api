@@ -1,6 +1,6 @@
-const multer = require('multer');
+import multer from "multer";
 
-module.exports = (multer({
+const multer_foto = multer({
   storage: multer.diskStorage({
     destination: (req, file, cb) => {
       cb(null, './public/upload/users')
@@ -20,4 +20,6 @@ module.exports = (multer({
 
     return cb(null, false);
   }
-}));
+})
+
+export default multer_foto;;

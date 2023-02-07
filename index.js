@@ -1,9 +1,12 @@
-const express    = require("express");
-const app        = express();
-const mysql      = require("mysql");
-const cors       = require("cors");
-const path       = require("path");
-const uploaduser = require('./middlewares/uploadimage');
+import express    from "express";
+import mysql      from "mysql";
+import cors       from "cors";
+import uploaduser from './middlewares/uploadimage.js';
+
+import fs         from "fs";
+import https      from "https";
+
+const app = express();
 
 const db = mysql.createPool({
   host: "suitesistemas.cbtdu4gfiiub.us-east-1.rds.amazonaws.com",
@@ -12,13 +15,19 @@ const db = mysql.createPool({
   database: 'dados_ports_saude'
 });
 
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin",  "*");
+  res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
+  res.header("Access-Control-Allow-Headers", "X-PINGOTHER, Content-Type, Authorization");
 
+  next();
+});
 
 app.use(express.static('public/upload')); //Libera acesso a pasta de imagens*/
 
+app.use(express.json());
 app.use(cors());
 
-app.use(express.json());
 
 app.get("/colaborador/listar", (req, res) => {
   let lFiltro = ' where flg_colaborador = "S"';
@@ -129,6 +138,11 @@ app.post("/upload-image", uploaduser.single('image'), async(req, res) => {
   });
 });
 
-app.listen(3001, ()=>{
+{/*app.listen(3001, ()=>{
   console.log('Servidor Web no ar na porta 3001');
-});
+});*/}
+
+https.createServer({
+  cert: fs.readFileSync('ssl/code.crt'),
+  key:  fs.readFileSync('ssl/code.key')
+}, app).listen(3001, () => console.log("Servidor Web Https no ar na porta 3002"));

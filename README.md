@@ -140,6 +140,27 @@ git init
        git pull
      em seguida atualize o servidor com o comando:
        pm2 restart backend
+
+# Aplicar Https na Api
+Necessário instalar as bibliotecas:
+  npm i cors -s
+  npm i https -s
+  npm i fs -s
+
+Abra um Gerador de Certificado SSL
+ exemplo: https://pt.rakko.tools/tools/46/
+
+Crie uma pasta chamada 'ssl' na raiz do projeto e salve os tokens gerados nela
+
+No index.js importe as dependencias
+  import fs    from 'fs';
+  import https from 'https';
+  import cors  from 'cors';  
+
+continue...
+
+Utilize a porta 443 -> padrão SSL
+
     
 
 
