@@ -161,6 +161,9 @@ continue...
 
 Utilize a porta 443 -> padrão SSL
 
+# comando pra encapsular o projeto em uma pasta build
+npm run build
+
     
 
 
