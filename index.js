@@ -38,7 +38,7 @@ app.get("/colaborador/listar", (req, res) => {
       SQL += ' order by cod_pessoa desc';
 
   db.query(SQL, (err, result) => {
-    if (err) console.log(err);
+    if (err) console.log(err)
     else res.send(result);
   });
 });
@@ -69,7 +69,8 @@ app.post("/colaborador/inserir", (req, res) => {
                  body.dsc_ddd_celular_01, body.dsc_celular_01, body.dsc_cep, body.dsc_bairro, body.dsc_cidade, body.dsc_logradouro, body.dat_cadastro,
                  body.dat_nascimento, body.flg_usuario, body.flg_paciente, body.flg_colaborador, body.flg_fornecedor, body.flg_sexo, body.flg_uf,
                  body.num_logradouro, body.dsc_imagem], (err, result) =>{
-    console.log(err);
+    if (err) console.log(err)
+    else res.send(result);
   });
 });
 
@@ -88,7 +89,9 @@ app.put("/colaborador/editar/:cod_pessoa", (req, res) => {
       SQL +=     ' dsc_cep            = ?,';
       SQL +=     ' dsc_bairro         = ?,';
       SQL +=     ' dsc_cidade         = ?,';
-      SQL +=     ' dsc_logradouro     = ?,';      
+      SQL +=     ' dsc_logradouro     = ?,';
+      SQL +=     ' dat_cadastro       = ?,';
+      SQL +=     ' dat_nascimento     = ?,';
       SQL +=     ' flg_usuario        = ?,';
       SQL +=     ' flg_paciente       = ?,';
       SQL +=     ' flg_colaborador    = ?,';
@@ -98,10 +101,11 @@ app.put("/colaborador/editar/:cod_pessoa", (req, res) => {
       SQL += ' where cod_pessoa       = ?';
 
   db.query(SQL, [body.dsc_nome_pessoa, body.dsc_nome_fantasia, body.dsc_referencia, body.dsc_cpf_cnpj, body.dsc_ddd_01, body.dsc_fone_01,
-                 body.dsc_ddd_celular_01, body.dsc_celular_01, body.dsc_cep, body.dsc_bairro, body.dsc_cidade, body.dsc_logradouro,
-                 body.flg_usuario, body.flg_paciente, body.flg_colaborador, body.flg_fornecedor, body.flg_uf, body.num_logradouro,
+                 body.dsc_ddd_celular_01, body.dsc_celular_01, body.dsc_cep, body.dsc_bairro, body.dsc_cidade, body.dsc_logradouro, body.dat_cadastro,
+                 body.dat_nascimento, body.flg_usuario, body.flg_paciente, body.flg_colaborador, body.flg_fornecedor, body.flg_uf, body.num_logradouro,
                  req.params.cod_pessoa], (err, result) =>{
-    console.log(err);
+    if (err) console.log(err)
+    else res.send(result);
   });
 });
 
@@ -110,7 +114,8 @@ app.delete("/colaborador/excluir/:cod_pessoa", (req, res) => {
       SQL += ' where cod_pessoa = ?';
 
   db.query(SQL, [req.params.cod_pessoa], (err, result) =>{
-    console.log(err);
+    if (err) console.log(err)
+    else res.send(result);
   });
 });
 
@@ -138,9 +143,9 @@ app.post("/upload-image", uploaduser.single('image'), async(req, res) => {
   });
 });
 
-{/*app.listen(3001, ()=>{
+app.listen(3002, ()=>{
   console.log('Servidor Web no ar na porta 3001');
-});*/}
+});
 
 https.createServer({
   cert: fs.readFileSync('ssl/code.crt'),
