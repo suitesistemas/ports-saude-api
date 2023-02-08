@@ -28,7 +28,7 @@ app.use(express.static('public/upload')); //Libera acesso a pasta de imagens*/
 app.use(express.json());
 app.use(cors());
 
-
+/* tbl_pessoa - Colaborador*/
 app.get("/colaborador/listar", (req, res) => {
   let lFiltro = ' where flg_colaborador = "S"';
 
@@ -43,7 +43,23 @@ app.get("/colaborador/listar", (req, res) => {
   });
 });
 
-app.get("/colaborador/listar/:cod_pessoa", (req, res) => {
+/* tbl_pessoa - Paciente*/
+app.get("/paciente/listar", (req, res) => {
+  let lFiltro = ' where flg_paciente = "S"';
+
+  let SQL  = ' select *';
+      SQL += ' from   tbl_pessoa';
+      SQL += lFiltro; //where
+      SQL += ' order by cod_pessoa desc';
+
+  db.query(SQL, (err, result) => {
+    if (err) console.log(err)
+    else res.send(result);
+  });
+});
+
+/* tbl_pessoa*/
+app.get("/pessoa/listar/:cod_pessoa", (req, res) => {
   let SQL  = ' select *';
       SQL += ' from   tbl_pessoa';
       SQL += ' where  cod_pessoa = ?';
@@ -57,7 +73,7 @@ app.get("/colaborador/listar/:cod_pessoa", (req, res) => {
   });
 });
 
-app.post("/colaborador/inserir", (req, res) => {
+app.post("/pessoa/inserir", (req, res) => {
   const body = req.body;
 
   let SQL  = ' insert into tbl_pessoa (dsc_nome_pessoa, dsc_nome_fantasia, dsc_referencia, dsc_cpf_cnpj, dsc_ddd_01, dsc_fone_01, dsc_ddd_celular_01,';
@@ -74,7 +90,7 @@ app.post("/colaborador/inserir", (req, res) => {
   });
 });
 
-app.put("/colaborador/editar/:cod_pessoa", (req, res) => {
+app.put("/pessoa/editar/:cod_pessoa", (req, res) => {
   const body = req.body;
 
   let SQL  = ' update tbl_pessoa';
@@ -109,21 +125,12 @@ app.put("/colaborador/editar/:cod_pessoa", (req, res) => {
   });
 });
 
-app.delete("/colaborador/excluir/:cod_pessoa", (req, res) => {
+app.delete("/pessoa/excluir/:cod_pessoa", (req, res) => {
   let SQL  = ' delete from tbl_pessoa';
       SQL += ' where cod_pessoa = ?';
 
   db.query(SQL, [req.params.cod_pessoa], (err, result) =>{
     if (err) console.log(err)
-    else res.send(result);
-  });
-});
-
-app.get("/paciente/listar", (req, res) => {
-  let SQL = 'select * from tbl_pessoa where flg_paciente = "S"';
-
-  db.query(SQL, (err, result) => {
-    if (err) console.log(err);
     else res.send(result);
   });
 });
