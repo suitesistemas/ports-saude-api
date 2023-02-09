@@ -76,12 +76,12 @@ app.get("/pessoa/listar/:cod_pessoa", (req, res) => {
 app.post("/pessoa/inserir", (req, res) => {
   const body = req.body;
 
-  let SQL  = ' insert into tbl_pessoa (dsc_nome_pessoa, dsc_nome_fantasia, dsc_referencia, dsc_cpf_cnpj, dsc_ddd_01, dsc_fone_01, dsc_ddd_celular_01,';
+  let SQL  = ' insert into tbl_pessoa (dsc_nome_pessoa, dsc_nome_fantasia, dsc_referencia, dsc_rg_insc_estadual, dsc_cpf_cnpj, dsc_ddd_01, dsc_fone_01, dsc_ddd_celular_01,';
       SQL +=                         ' dsc_celular_01, dsc_cep, dsc_bairro, dsc_cidade, dsc_logradouro, dat_cadastro, dat_nascimento, flg_usuario,';
       SQL +=                         ' flg_paciente, flg_colaborador, flg_fornecedor, flg_sexo, flg_uf, num_logradouro, dsc_imagem)';
       SQL += ' values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
-  db.query(SQL, [body.dsc_nome_pessoa, body.dsc_nome_fantasia, body.dsc_referencia, body.dsc_cpf_cnpj, body.dsc_ddd_01, body.dsc_fone_01,
+  db.query(SQL, [body.dsc_nome_pessoa, body.dsc_nome_fantasia, body.dsc_referencia, body.dsc_rg_insc_estadual, body.dsc_cpf_cnpj, body.dsc_ddd_01, body.dsc_fone_01,
                  body.dsc_ddd_celular_01, body.dsc_celular_01, body.dsc_cep, body.dsc_bairro, body.dsc_cidade, body.dsc_logradouro, body.dat_cadastro,
                  body.dat_nascimento, body.flg_usuario, body.flg_paciente, body.flg_colaborador, body.flg_fornecedor, body.flg_sexo, body.flg_uf,
                  body.num_logradouro, body.dsc_imagem], (err, result) =>{
@@ -94,29 +94,30 @@ app.put("/pessoa/editar/:cod_pessoa", (req, res) => {
   const body = req.body;
 
   let SQL  = ' update tbl_pessoa';
-      SQL += ' set dsc_nome_pessoa    = ?,';
-      SQL +=     ' dsc_nome_fantasia  = ?,';
-      SQL +=     ' dsc_referencia     = ?,';
-      SQL +=     ' dsc_cpf_cnpj       = ?,';
-      SQL +=     ' dsc_ddd_01         = ?,';
-      SQL +=     ' dsc_fone_01        = ?,';
-      SQL +=     ' dsc_ddd_celular_01 = ?,';
-      SQL +=     ' dsc_celular_01     = ?,';
-      SQL +=     ' dsc_cep            = ?,';
-      SQL +=     ' dsc_bairro         = ?,';
-      SQL +=     ' dsc_cidade         = ?,';
-      SQL +=     ' dsc_logradouro     = ?,';
-      SQL +=     ' dat_cadastro       = ?,';
-      SQL +=     ' dat_nascimento     = ?,';
-      SQL +=     ' flg_usuario        = ?,';
-      SQL +=     ' flg_paciente       = ?,';
-      SQL +=     ' flg_colaborador    = ?,';
-      SQL +=     ' flg_fornecedor     = ?,';
-      SQL +=     ' flg_uf             = ?,';
-      SQL +=     ' num_logradouro     = ?';
-      SQL += ' where cod_pessoa       = ?';
+      SQL += ' set dsc_nome_pessoa      = ?,';
+      SQL +=     ' dsc_nome_fantasia    = ?,';
+      SQL +=     ' dsc_referencia       = ?,';
+      SQL +=     ' dsc_rg_insc_estadual = ?,';
+      SQL +=     ' dsc_cpf_cnpj         = ?,';
+      SQL +=     ' dsc_ddd_01           = ?,';
+      SQL +=     ' dsc_fone_01          = ?,';
+      SQL +=     ' dsc_ddd_celular_01   = ?,';
+      SQL +=     ' dsc_celular_01       = ?,';
+      SQL +=     ' dsc_cep              = ?,';
+      SQL +=     ' dsc_bairro           = ?,';
+      SQL +=     ' dsc_cidade           = ?,';
+      SQL +=     ' dsc_logradouro       = ?,';
+      SQL +=     ' dat_cadastro         = ?,';
+      SQL +=     ' dat_nascimento       = ?,';
+      SQL +=     ' flg_usuario          = ?,';
+      SQL +=     ' flg_paciente         = ?,';
+      SQL +=     ' flg_colaborador      = ?,';
+      SQL +=     ' flg_fornecedor       = ?,';
+      SQL +=     ' flg_uf               = ?,';
+      SQL +=     ' num_logradouro       = ?';
+      SQL += ' where cod_pessoa         = ?';
 
-  db.query(SQL, [body.dsc_nome_pessoa, body.dsc_nome_fantasia, body.dsc_referencia, body.dsc_cpf_cnpj, body.dsc_ddd_01, body.dsc_fone_01,
+  db.query(SQL, [body.dsc_nome_pessoa, body.dsc_nome_fantasia, body.dsc_referencia, body.dsc_rg_insc_estadual, body.dsc_cpf_cnpj, body.dsc_ddd_01, body.dsc_fone_01,
                  body.dsc_ddd_celular_01, body.dsc_celular_01, body.dsc_cep, body.dsc_bairro, body.dsc_cidade, body.dsc_logradouro, body.dat_cadastro,
                  body.dat_nascimento, body.flg_usuario, body.flg_paciente, body.flg_colaborador, body.flg_fornecedor, body.flg_uf, body.num_logradouro,
                  req.params.cod_pessoa], (err, result) =>{
