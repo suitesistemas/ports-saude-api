@@ -1,10 +1,8 @@
-import express    from "express";
-import mysql      from "mysql";
-import cors       from "cors";
-import uploaduser from './middlewares/uploadimage.js';
-
-import fs         from "fs";
-import https      from "https";
+import express from "express";
+import mysql   from "mysql";
+import cors    from "cors";
+import fs      from "fs";
+import https   from "https";
 
 const app = express();
 
@@ -28,6 +26,21 @@ app.use(express.static('public/upload')); //Libera acesso a pasta de imagens*/
 app.use(express.json());
 app.use(cors());
 
+/* tbl_pessoa*/
+app.get("/pessoa/listar", (req, res) => {
+  let lFiltro = ' where 1 = 1';
+
+  let SQL  = ' select *';
+      SQL += ' from   tbl_pessoa';
+      SQL += lFiltro; //where
+      SQL += ' order by cod_pessoa desc';
+
+  db.query(SQL, (err, result) => {
+    if (err) console.log(err)
+    else res.send(result);
+  });
+});
+
 /* tbl_pessoa - Colaborador*/
 app.get("/colaborador/listar", (req, res) => {
   let lFiltro = ' where flg_colaborador = "S"';
@@ -46,6 +59,36 @@ app.get("/colaborador/listar", (req, res) => {
 /* tbl_pessoa - Paciente*/
 app.get("/paciente/listar", (req, res) => {
   let lFiltro = ' where flg_paciente = "S"';
+
+  let SQL  = ' select *';
+      SQL += ' from   tbl_pessoa';
+      SQL += lFiltro; //where
+      SQL += ' order by cod_pessoa desc';
+
+  db.query(SQL, (err, result) => {
+    if (err) console.log(err)
+    else res.send(result);
+  });
+});
+
+/* tbl_pessoa - Fornecedor*/
+app.get("/fornecedor/listar", (req, res) => {
+  let lFiltro = ' where flg_fornecedor = "S"';
+
+  let SQL  = ' select *';
+      SQL += ' from   tbl_pessoa';
+      SQL += lFiltro; //where
+      SQL += ' order by cod_pessoa desc';
+
+  db.query(SQL, (err, result) => {
+    if (err) console.log(err)
+    else res.send(result);
+  });
+});
+
+/* tbl_pessoa - Contato*/
+app.get("/contato/listar", (req, res) => {
+  let lFiltro = ' where flg_contato = "S"';
 
   let SQL  = ' select *';
       SQL += ' from   tbl_pessoa';
@@ -78,13 +121,13 @@ app.post("/pessoa/inserir", (req, res) => {
 
   let SQL  = ' insert into tbl_pessoa (dsc_nome_pessoa, dsc_nome_fantasia, dsc_referencia, dsc_rg_insc_estadual, dsc_cpf_cnpj, dsc_ddd_01, dsc_fone_01,';
       SQL +=                         ' dsc_ddd_celular_01, dsc_celular_01, dsc_cep, dsc_bairro, dsc_cidade, dsc_logradouro, dat_cadastro, dat_nascimento,';
-      SQL +=                         ' flg_usuario, flg_paciente, flg_colaborador, flg_fornecedor, flg_tipo_pessoa, flg_sexo, flg_uf, num_logradouro, dsc_imagem)';
-      SQL += ' values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+      SQL +=                         ' flg_usuario, flg_paciente, flg_colaborador, flg_fornecedor, flg_contato, flg_tipo_pessoa, flg_sexo, flg_uf, num_logradouro, dsc_imagem)';
+      SQL += ' values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
-  db.query(SQL, [body.dsc_nome_pessoa, body.dsc_nome_fantasia, body.dsc_referencia, body.dsc_rg_insc_estadual, body.dsc_cpf_cnpj, body.dsc_ddd_01, body.dsc_fone_01,
-                 body.dsc_ddd_celular_01, body.dsc_celular_01, body.dsc_cep, body.dsc_bairro, body.dsc_cidade, body.dsc_logradouro, body.dat_cadastro,
-                 body.dat_nascimento, body.flg_usuario, body.flg_paciente, body.flg_colaborador, body.flg_fornecedor, body.flg_tipo_pessoa, body.flg_sexo,
-                 body.flg_uf, body.num_logradouro, body.dsc_imagem], (err, result) =>{
+  db.query(SQL, [body.dsc_nome_pessoa, body.dsc_nome_fantasia, body.dsc_referencia, body.dsc_rg_insc_estadual, body.dsc_cpf_cnpj, body.dsc_ddd_01,
+                 body.dsc_fone_01, body.dsc_ddd_celular_01, body.dsc_celular_01, body.dsc_cep, body.dsc_bairro, body.dsc_cidade, body.dsc_logradouro,
+                 body.dat_cadastro, body.dat_nascimento, body.flg_usuario, body.flg_paciente, body.flg_colaborador, body.flg_fornecedor, body.flg_contato,
+                 body.flg_tipo_pessoa, body.flg_sexo, body.flg_uf, body.num_logradouro, body.dsc_imagem], (err, result) =>{
     if (err) console.log(err)
     else res.send(result);
   });
@@ -113,6 +156,7 @@ app.put("/pessoa/editar/:cod_pessoa", (req, res) => {
       SQL +=     ' flg_paciente         = ?,';
       SQL +=     ' flg_colaborador      = ?,';
       SQL +=     ' flg_fornecedor       = ?,';
+      SQL +=     ' flg_contato          = ?,';
       SQL +=     ' flg_uf               = ?,';
       SQL +=     ' flg_tipo_pessoa      = ?,';
       SQL +=     ' flg_sexo             = ?,';
@@ -121,8 +165,8 @@ app.put("/pessoa/editar/:cod_pessoa", (req, res) => {
 
   db.query(SQL, [body.dsc_nome_pessoa, body.dsc_nome_fantasia, body.dsc_referencia, body.dsc_rg_insc_estadual, body.dsc_cpf_cnpj, body.dsc_ddd_01,
                  body.dsc_fone_01, body.dsc_ddd_celular_01, body.dsc_celular_01, body.dsc_cep, body.dsc_bairro, body.dsc_cidade, body.dsc_logradouro,
-                 body.dat_cadastro, body.dat_nascimento, body.flg_usuario, body.flg_paciente, body.flg_colaborador, body.flg_fornecedor, body.flg_uf,
-                 body.flg_tipo_pessoa, body.flg_sexo, body.num_logradouro, req.params.cod_pessoa], (err, result) =>{
+                 body.dat_cadastro, body.dat_nascimento, body.flg_usuario, body.flg_paciente, body.flg_colaborador, body.flg_fornecedor, body.flg_contato,
+                 body.flg_uf, body.flg_tipo_pessoa, body.flg_sexo, body.num_logradouro, req.params.cod_pessoa], (err, result) =>{
     if (err) console.log(err)
     else res.send(result);
   });
@@ -135,21 +179,6 @@ app.delete("/pessoa/excluir/:cod_pessoa", (req, res) => {
   db.query(SQL, [req.params.cod_pessoa], (err, result) =>{
     if (err) console.log(err)
     else res.send(result);
-  });
-});
-
-//Upload Imagem
-app.post("/upload-image", uploaduser.single('image'), async(req, res) => {
-  if (req.file) {
-    return res.json({
-      erro: false,
-      mensagem: "Upload realizado com sucesso!"
-    });  
-  }
-  
-  return res.status(400).json({
-    erro: true,
-    mensagem: "Erro: Upload não realizado, aceito tipos PNG, JPG, JPEG ou BMP!"
   });
 });
 
