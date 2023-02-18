@@ -331,6 +331,6 @@ app.listen(3002, ()=>{
 });
 
 https.createServer({
-  cert: fs.readFileSync('ssl/code.crt'),
-  key:  fs.readFileSync('ssl/code.key')
+  //cert: fs.readFileSync('ssl/code.crt'),
+  //key:  fs.readFileSync('ssl/code.key')
 }, app).listen(3001, () => console.log("Servidor Web Https no ar na porta 3001"));
