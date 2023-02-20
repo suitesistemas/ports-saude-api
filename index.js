@@ -184,8 +184,6 @@ app.delete("/pessoa/excluir/:cod_pessoa", (req, res) => {
   });
 });
 
-
-
 //****** Pessoa Contatos ******/
 
 //tbl_pessoa_contato - Listar por pessoa
@@ -236,8 +234,6 @@ app.delete("/pessoa/contato/excluir/:fky_pessoa/:fky_contato", (req, res) => {
     else res.send(result);
   });
 });
-
-
 
 /****** Paciente ******/
 
@@ -326,11 +322,15 @@ app.put("/pessoa/paciente/editar/:cod_pessoa", (req, res) => {
   });
 });
 
-app.listen(3002, ()=>{
-  console.log('Servidor Web no ar na porta 3002');
+app.get("/", (req, res) => {
+  res.send("<h1>My Node App</h1>")
 });
 
-https.createServer({
+app.listen(5000, ()=>{
+  console.log('Servidor Web no ar na porta 5000');
+});
+
+//https.createServer({
   //cert: fs.readFileSync('ssl/code.crt'),
   //key:  fs.readFileSync('ssl/code.key')
-}, app).listen(3001, () => console.log("Servidor Web Https no ar na porta 3001"));
+//}, app).listen(3001, () => console.log("Servidor Web Https no ar na porta 3001"));
