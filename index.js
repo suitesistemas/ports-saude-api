@@ -184,6 +184,72 @@ app.delete("/pessoa/excluir/:cod_pessoa", (req, res) => {
   });
 });
 
+/****** Usuario ******/
+
+//tbl_usuario - Listar - Dados do Usuario - 1 Registro
+app.get("/pessoa/usuario/listar/:cod_pessoa", (req, res) => {
+  let SQL  = ' select *';
+      SQL += ' from   tbl_usuario';
+      SQL += ' where  fky_pessoa = ?';
+
+  db.query(SQL, [req.params.cod_pessoa], (err, result) => {
+    if (err){
+      return res.status(500).send(err);
+    } else{
+      res.send(result);
+    }
+  });
+});
+
+//tbl_usuario - Login - Dados do Usuario
+app.get("/pessoa/usuario/login/:dsc_usuario/:dsc_senha", (req, res) => {
+  let SQL  = ' select flg_visualizar_resguardado';
+      SQL += ' from   tbl_usuario';
+      SQL += ' where  dsc_usuario = ?';
+      SQL +=   ' and  dsc_senha   = ?';
+
+  db.query(SQL, [req.params.dsc_usuario, req.params.dsc_senha], (err, result) => {
+    if (err){
+      return res.status(500).send(err);
+    } else{
+      res.send(result);
+    }
+  });
+});
+
+//tbl_usuario - Editar e Inserir quando não encontrado
+app.put("/pessoa/usuario/editar/:cod_pessoa", (req, res) => {
+  const body = req.body;
+
+  let SQL  = ' update tbl_usuario';
+      SQL += ' set dsc_usuario                = ?,';
+      SQL +=     ' dsc_senha                  = ?,';
+      SQL +=     ' flg_visualizar_resguardado = ?';      
+      SQL += ' where fky_pessoa               = ?';
+
+  db.query(SQL, [body.dsc_usuario, body.dsc_senha, body.flg_visualizar_resguardado, req.params.cod_pessoa], (err, result) =>{
+    if (err) console.log(err)
+    else{
+
+    //Se não encontrou - Insere  
+      if (result.affectedRows === 0) {
+        SQL  = ' insert into tbl_usuario (fky_pessoa, dsc_usuario, dsc_senha, flg_visualizar_resguardado)';
+        SQL += ' values (?, ?, ?, ?)';
+
+        db.query(SQL, [body.fky_pessoa, body.dsc_usuario, body.dsc_senha, body.flg_visualizar_resguardado], (err, result) =>{
+          if (err) console.log(err)
+          else res.send(result.insertid);
+        });
+
+        res.send(result);
+      }
+      else{
+        res.send(result);
+      }
+    } 
+  });
+});
+
 //****** Pessoa Contatos ******/
 
 //tbl_pessoa_contato - Listar por pessoa
@@ -222,7 +288,6 @@ app.post("/pessoa/contato/inserir", (req, res) => {
   });
 });
 
-
 //tbl_pessoa_contato - Excluir
 app.delete("/pessoa/contato/excluir/:fky_pessoa/:fky_contato", (req, res) => {
   let SQL  = ' delete from tbl_pessoa_contato';
@@ -252,29 +317,12 @@ app.get("/pessoa/paciente/listar/:cod_pessoa", (req, res) => {
   });
 });
 
-/*tbl_paciente - Inserir*/
-app.post("pessoa/paciente/inserir", (req, res) => {
-  const body = req.body;
-
-  let SQL  = ' insert into tbl_pessoa_contato (flg_estado_civil, flg_frequenta_religiao, dsc_cidade_ant, flg_possui_filho, int_quant_filho, int_quant_filho_vivo, flg_possui_casa_propria,';
-      SQL +=                                 ' dsc_filiacao_mae, dsc_filiacao_pai, flg_possui_renda, dsc_tipo_renda, dbl_valor_renda, flg_paciente_interditado, mem_dados_resguardado)';
-      SQL += ' values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-
-  db.query(SQL, [body.flg_estado_civil, body.flg_frequenta_religiao, body.dsc_cidade_ant, body.flg_possui_filho, body.int_quant_filho, body.int_quant_filho_vivo,
-                 body.flg_possui_casa_propria, body.dsc_filiacao_mae, body.dsc_filiacao_pai, body.flg_possui_renda, body.dsc_tipo_renda, body.dbl_valor_renda, body.flg_paciente_interditado,
-                 body.mem_dados_resguardado], (err, result) =>{
-    if (err) console.log(err)
-    else res.send(result.insertid);
-  });
-});
-
-//tbl_pessoa - Editar e Inserir quando não encontrado
+//tbl_paciente - Editar e Inserir quando não encontrado
 app.put("/pessoa/paciente/editar/:cod_pessoa", (req, res) => {
   const body = req.body;
 
   let SQL  = ' update tbl_paciente';
-      SQL += ' set fky_pessoa               = ?,';;
-      SQL +=     ' dsc_filiacao_pai         = ?,';
+      SQL += ' set dsc_filiacao_pai         = ?,';
       SQL +=     ' dsc_filiacao_mae         = ?,';
       SQL +=     ' dsc_religiao             = ?,';
       SQL +=     ' dsc_tipo_renda           = ?,';
@@ -293,7 +341,7 @@ app.put("/pessoa/paciente/editar/:cod_pessoa", (req, res) => {
       SQL +=     ' mem_dados_resguardado    = ?';
       SQL += ' where fky_pessoa             = ?';
 
-  db.query(SQL, [body.fky_pessoa, body.dsc_filiacao_pai, body.dsc_filiacao_mae, body.dsc_religiao, body.dsc_tipo_renda, body.dsc_cidade_ant, body.dat_residencia_cidade, body.dbl_valor_renda,
+  db.query(SQL, [body.dsc_filiacao_pai, body.dsc_filiacao_mae, body.dsc_religiao, body.dsc_tipo_renda, body.dsc_cidade_ant, body.dat_residencia_cidade, body.dbl_valor_renda,
                  body.fky_curador, body.flg_estado_civil, body.flg_frequenta_religiao, body.flg_possui_filho, body.flg_possui_casa_propria, body.flg_possui_renda, body.flg_paciente_interditado,
                  body.int_quant_filho, body.int_quant_filho_vivo, body.mem_dados_resguardado, req.params.cod_pessoa], (err, result) =>{
     if (err) console.log(err)
@@ -308,7 +356,7 @@ app.put("/pessoa/paciente/editar/:cod_pessoa", (req, res) => {
 
         db.query(SQL, [body.fky_pessoa, body.dsc_filiacao_pai, body.dsc_filiacao_mae, body.dsc_religiao, body.dsc_tipo_renda, body.dsc_cidade_ant, body.dat_residencia_cidade, body.dbl_valor_renda,
                        null, body.flg_estado_civil, body.flg_frequenta_religiao, body.flg_possui_filho, body.flg_possui_casa_propria, body.flg_possui_renda, body.flg_paciente_interditado,
-                       body.int_quant_filho, body.int_quant_filho_vivo, body.mem_dados_resguardado, req.params.cod_pessoa], (err, result) =>{
+                       body.int_quant_filho, body.int_quant_filho_vivo, body.mem_dados_resguardado], (err, result) =>{
           if (err) console.log(err)
           else res.send(result.insertid);
         });
@@ -321,6 +369,8 @@ app.put("/pessoa/paciente/editar/:cod_pessoa", (req, res) => {
     } 
   });
 });
+
+/****** ******/
 
 app.get("/", (req, res) => {
   res.send("<h1>Servidor Web no ar na porta 5000</h1>")
