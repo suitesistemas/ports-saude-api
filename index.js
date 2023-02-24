@@ -232,6 +232,10 @@ app.get("/pessoa/usuario/login/:dsc_usuario/:dsc_senha", (req, res) => {
       SQL += '   and  dsc_usuario = ?';
       SQL +=   ' and  dsc_senha   = ?';
 
+      console.log(req.headers.cod_conta);
+      console.log(req.params.dsc_usuario);
+      console.log(req.params.dsc_senha);
+
   db.query(SQL, [req.headers.cod_conta, req.params.dsc_usuario, req.params.dsc_senha], (err, result) => {
     if (err){
       return res.status(500).send(err);
