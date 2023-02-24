@@ -1,8 +1,6 @@
 import express from "express";
 import mysql   from "mysql";
 import cors    from "cors";
-import fs      from "fs";
-import https   from "https";
 
 const app = express();
 
@@ -26,18 +24,35 @@ app.use(express.static('public/upload')); //Libera acesso a pasta de imagens*/
 app.use(express.json());
 app.use(cors());
 
-//****** Pessoa ******
+//****** tbl_conta ******/
+//tbl_conta - Login - busca codigo da conta
+app.get("/pessoa/conta/login/:dsc_conta", (req, res) => {
+  let SQL  = ' select cod_conta';
+      SQL += ' from   tbl_conta';
+      SQL += ' where  dsc_conta = ?';
+
+  db.query(SQL, [req.params.dsc_conta], (err, result) => {
+    if (err){
+      return res.status(500).send(err);
+    } else{
+      res.send(result);
+    }
+  });
+});
+
+
+//****** tbl_pessoa ******
 
 //tbl_pessoa - Todos
 app.get("/pessoa/listar", (req, res) => {
-  let lFiltro = ' where 1 = 1';
+  let lFiltro = ' where fky_conta = ?';
 
   let SQL  = ' select *';
       SQL += ' from   tbl_pessoa';
       SQL += lFiltro; //where
       SQL += ' order by cod_pessoa desc';
 
-  db.query(SQL, (err, result) => {
+  db.query(SQL, [req.headers.cod_conta], (err, result) => {
     if (err) console.log(err)
     else res.send(result);
   });
@@ -45,14 +60,15 @@ app.get("/pessoa/listar", (req, res) => {
 
 //tbl_pessoa - Paciente
 app.get("/paciente/listar", (req, res) => {
-  let lFiltro = ' where flg_tipo_cadastro = "P"';
+  let lFiltro = ' where fky_conta         = ?';
+      lFiltro += '  and flg_tipo_cadastro = "P"';
 
   let SQL  = ' select *';
       SQL += ' from   tbl_pessoa';
       SQL += lFiltro; //where
       SQL += ' order by cod_pessoa desc';
 
-  db.query(SQL, (err, result) => {
+  db.query(SQL, [req.headers.cod_conta], (err, result) => {
     if (err) console.log(err)
     else res.send(result);
   });
@@ -60,14 +76,15 @@ app.get("/paciente/listar", (req, res) => {
 
 //tbl_pessoa - Colaborador*/
 app.get("/colaborador/listar", (req, res) => {
-  let lFiltro = ' where flg_tipo_cadastro = "C"';
+  let lFiltro  = ' where fky_conta         = ?';
+      lFiltro += '   and flg_tipo_cadastro = "C"';
 
   let SQL  = ' select *';
       SQL += ' from   tbl_pessoa';
       SQL += lFiltro; //where
       SQL += ' order by cod_pessoa desc';
 
-  db.query(SQL, (err, result) => {
+  db.query(SQL, [req.headers.cod_conta], (err, result) => {
     if (err) console.log(err)
     else res.send(result);
   });
@@ -75,14 +92,15 @@ app.get("/colaborador/listar", (req, res) => {
 
 //tbl_pessoa - Fornecedor
 app.get("/fornecedor/listar", (req, res) => {
-  let lFiltro = ' where flg_tipo_cadastro = "F"';
+  let lFiltro =  ' where fky_conta         = ?';
+      lFiltro += '   and flg_tipo_cadastro = "F"';
 
   let SQL  = ' select *';
       SQL += ' from   tbl_pessoa';
       SQL += lFiltro; //where
       SQL += ' order by cod_pessoa desc';
 
-  db.query(SQL, (err, result) => {
+  db.query(SQL, [req.headers.cod_conta], (err, result) => {
     if (err) console.log(err)
     else res.send(result);
   });
@@ -90,14 +108,15 @@ app.get("/fornecedor/listar", (req, res) => {
 
 //tbl_pessoa - Contato
 app.get("/contato/listar", (req, res) => {
-  let lFiltro = ' where flg_tipo_cadastro = "N"';
+  let lFiltro =  ' where fky_conta         = ?';
+      lFiltro += '   and flg_tipo_cadastro = "N"';
 
   let SQL  = ' select *';
       SQL += ' from   tbl_pessoa';
       SQL += lFiltro; //where
       SQL += ' order by cod_pessoa desc';
 
-  db.query(SQL, (err, result) => {
+  db.query(SQL, [req.headers.cod_conta], (err, result) => {
     if (err) console.log(err)
     else res.send(result);
   });
@@ -107,9 +126,10 @@ app.get("/contato/listar", (req, res) => {
 app.get("/pessoa/listar/:cod_pessoa", (req, res) => {
   let SQL  = ' select *';
       SQL += ' from   tbl_pessoa';
-      SQL += ' where  cod_pessoa = ?';
+      SQL += ' where  fky_conta  = ?';
+      SQL += '   and  cod_pessoa = ?';
 
-  db.query(SQL, [req.params.cod_pessoa], (err, result) => {
+  db.query(SQL, [req.headers.cod_conta, req.params.cod_pessoa], (err, result) => {
     if (err){
       return res.status(500).send(err);
     } else{
@@ -122,12 +142,12 @@ app.get("/pessoa/listar/:cod_pessoa", (req, res) => {
 app.post("/pessoa/inserir", (req, res) => {
   const body = req.body;
 
-  let SQL  = ' insert into tbl_pessoa (dsc_nome_pessoa, dsc_nome_fantasia, dsc_referencia, dsc_rg_insc_estadual, dsc_cpf_cnpj, dsc_ddd_01, dsc_fone_01,';
+  let SQL  = ' insert into tbl_pessoa (fky_conta, dsc_nome_pessoa, dsc_nome_fantasia, dsc_referencia, dsc_rg_insc_estadual, dsc_cpf_cnpj, dsc_ddd_01, dsc_fone_01,';
       SQL +=                         ' dsc_ddd_celular_01, dsc_celular_01, dsc_cep, dsc_bairro, dsc_cidade, dsc_cidade_natal, dsc_logradouro, dat_cadastro, dat_nascimento,';
       SQL +=                         ' flg_tipo_cadastro, flg_usuario, flg_tipo_pessoa, flg_sexo, flg_uf, num_logradouro, dsc_imagem)';
-      SQL += ' values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+      SQL += ' values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
-  db.query(SQL, [body.dsc_nome_pessoa, body.dsc_nome_fantasia, body.dsc_referencia, body.dsc_rg_insc_estadual, body.dsc_cpf_cnpj, body.dsc_ddd_01,
+  db.query(SQL, [req.headers.cod_conta, body.dsc_nome_pessoa, body.dsc_nome_fantasia, body.dsc_referencia, body.dsc_rg_insc_estadual, body.dsc_cpf_cnpj, body.dsc_ddd_01,
                  body.dsc_fone_01, body.dsc_ddd_celular_01, body.dsc_celular_01, body.dsc_cep, body.dsc_bairro, body.dsc_cidade, body.dsc_cidade_natal, body.dsc_logradouro,
                  body.dat_cadastro, body.dat_nascimento, body.flg_tipo_cadastro, body.flg_usuario, body.flg_tipo_pessoa, body.flg_sexo, body.flg_uf,
                  body.num_logradouro, body.dsc_imagem], (err, result) =>{
@@ -163,11 +183,12 @@ app.put("/pessoa/editar/:cod_pessoa", (req, res) => {
       SQL +=     ' flg_tipo_pessoa      = ?,';
       SQL +=     ' flg_sexo             = ?,';
       SQL +=     ' num_logradouro       = ?';
-      SQL += ' where cod_pessoa         = ?';
+      SQL += ' where fky_conta          = ?';
+      SQL += '   and cod_pessoa         = ?';
 
   db.query(SQL, [body.dsc_nome_pessoa, body.dsc_nome_fantasia, body.dsc_referencia, body.dsc_rg_insc_estadual, body.dsc_cpf_cnpj, body.dsc_ddd_01, body.dsc_fone_01, body.dsc_ddd_celular_01,
                  body.dsc_celular_01, body.dsc_cep, body.dsc_bairro, body.dsc_cidade, body.dsc_cidade_natal, body.dsc_logradouro, body.dat_cadastro, body.dat_nascimento, body.flg_tipo_cadastro,
-                 body.flg_usuario, body.flg_uf, body.flg_tipo_pessoa, body.flg_sexo, body.num_logradouro, req.params.cod_pessoa], (err, result) =>{
+                 body.flg_usuario, body.flg_uf, body.flg_tipo_pessoa, body.flg_sexo, body.num_logradouro, req.headers.cod_conta, req.params.cod_pessoa], (err, result) =>{
     if (err) console.log(err)
     else res.send(result);
   });
@@ -176,9 +197,10 @@ app.put("/pessoa/editar/:cod_pessoa", (req, res) => {
 //tbl_pessoa - Excluir
 app.delete("/pessoa/excluir/:cod_pessoa", (req, res) => {
   let SQL  = ' delete from tbl_pessoa';
-      SQL += ' where cod_pessoa = ?';
+      SQL += ' where fky_conta  = ?';
+      SQL += '   and cod_pessoa = ?';
 
-  db.query(SQL, [req.params.cod_pessoa], (err, result) =>{
+  db.query(SQL, [req.headers.cod_conta, req.params.cod_pessoa], (err, result) =>{
     if (err) console.log(err)
     else res.send(result);
   });
@@ -190,9 +212,10 @@ app.delete("/pessoa/excluir/:cod_pessoa", (req, res) => {
 app.get("/pessoa/usuario/listar/:cod_pessoa", (req, res) => {
   let SQL  = ' select *';
       SQL += ' from   tbl_usuario';
-      SQL += ' where  fky_pessoa = ?';
+      SQL += ' where  fky_conta  = ?';
+      SQL += '   and  fky_pessoa = ?';
 
-  db.query(SQL, [req.params.cod_pessoa], (err, result) => {
+  db.query(SQL, [req.headers.cod_conta, req.params.cod_pessoa], (err, result) => {
     if (err){
       return res.status(500).send(err);
     } else{
@@ -205,10 +228,11 @@ app.get("/pessoa/usuario/listar/:cod_pessoa", (req, res) => {
 app.get("/pessoa/usuario/login/:dsc_usuario/:dsc_senha", (req, res) => {
   let SQL  = ' select flg_visualizar_resguardado';
       SQL += ' from   tbl_usuario';
-      SQL += ' where  dsc_usuario = ?';
+      SQL += ' where  fky_conta   = ?';
+      SQL += '   and  dsc_usuario = ?';
       SQL +=   ' and  dsc_senha   = ?';
 
-  db.query(SQL, [req.params.dsc_usuario, req.params.dsc_senha], (err, result) => {
+  db.query(SQL, [req.headers.cod_conta, req.params.dsc_usuario, req.params.dsc_senha], (err, result) => {
     if (err){
       return res.status(500).send(err);
     } else{
@@ -225,9 +249,10 @@ app.put("/pessoa/usuario/editar/:cod_pessoa", (req, res) => {
       SQL += ' set dsc_usuario                = ?,';
       SQL +=     ' dsc_senha                  = ?,';
       SQL +=     ' flg_visualizar_resguardado = ?';      
-      SQL += ' where fky_pessoa               = ?';
+      SQL += ' where fky_conta  = ?';
+      SQL += '   and fky_pessoa = ?';
 
-  db.query(SQL, [body.dsc_usuario, body.dsc_senha, body.flg_visualizar_resguardado, req.params.cod_pessoa], (err, result) =>{
+  db.query(SQL, [body.dsc_usuario, body.dsc_senha, body.flg_visualizar_resguardado, req.headers.cod_conta, req.params.cod_pessoa], (err, result) =>{
     if (err) console.log(err)
     else{
 
@@ -265,9 +290,10 @@ app.get("/pessoa/contato/listar/:cod_pessoa", (req, res) => {
       SQL += '        contato.dsc_celular_01';
       SQL += ' from   tbl_pessoa_contato';
       SQL += ' inner join tbl_pessoa contato on (tbl_pessoa_contato.fky_contato = contato.cod_pessoa)';      
-      SQL += ' where tbl_pessoa_contato.fky_pessoa = ?';
+      SQL += ' where tbl_pessoa_contato.fky_conta  = ?';
+      SQL += '   and tbl_pessoa_contato.fky_pessoa = ?';
 
-  db.query(SQL, [req.params.cod_pessoa], (err, result) =>{
+  db.query(SQL, [req.headers.cod_conta, req.params.cod_pessoa], (err, result) =>{
     if (err) console.log(err)
     else res.send(result);
   });
@@ -277,11 +303,11 @@ app.get("/pessoa/contato/listar/:cod_pessoa", (req, res) => {
 app.post("/pessoa/contato/inserir", (req, res) => {
   const body = req.body;
 
-  let SQL  = ' insert into tbl_pessoa_contato (fky_pessoa, fky_contato, dsc_profissao, dsc_local_trabalho, dsc_ddd_fone_trabalho, dsc_fone_trabalho, flg_tipo_contato, ';
+  let SQL  = ' insert into tbl_pessoa_contato (fky_conta, fky_pessoa, fky_contato, dsc_profissao, dsc_local_trabalho, dsc_ddd_fone_trabalho, dsc_fone_trabalho, flg_tipo_contato, ';
       SQL +=                          ' flg_contato_principal, flg_estado_civil)';
-      SQL += ' values (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+      SQL += ' values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
-  db.query(SQL, [body.fky_pessoa, body.fky_contato, body.dsc_profissao, body.dsc_local_trabalho, body.dsc_ddd_fone_trabalho, body.dsc_fone_trabalho, body.flg_tipo_contato,
+  db.query(SQL, [req.headers.cod_conta, body.fky_pessoa, body.fky_contato, body.dsc_profissao, body.dsc_local_trabalho, body.dsc_ddd_fone_trabalho, body.dsc_fone_trabalho, body.flg_tipo_contato,
                  body.flg_contato_principal, body.flg_estado_civil], (err, result) =>{
     if (err) console.log(err)
     else res.send(result.insertid);
@@ -291,10 +317,11 @@ app.post("/pessoa/contato/inserir", (req, res) => {
 //tbl_pessoa_contato - Excluir
 app.delete("/pessoa/contato/excluir/:fky_pessoa/:fky_contato", (req, res) => {
   let SQL  = ' delete from tbl_pessoa_contato';
-      SQL += ' where fky_pessoa  = ?';
+      SQL += ' where fky_conta   = ?';
+      SQL += '   and fky_pessoa  = ?';
       SQL += '   and fky_contato = ?'
 
-  db.query(SQL, [req.params.fky_pessoa, req.params.fky_contato], (err, result) =>{
+  db.query(SQL, [req.headers.cod_conta, req.params.fky_pessoa, req.params.fky_contato], (err, result) =>{
     if (err) console.log(err)
     else res.send(result);
   });
@@ -306,9 +333,10 @@ app.delete("/pessoa/contato/excluir/:fky_pessoa/:fky_contato", (req, res) => {
 app.get("/pessoa/paciente/listar/:cod_pessoa", (req, res) => {
   let SQL  = ' select *';
       SQL += ' from   tbl_paciente';
-      SQL += ' where  fky_pessoa = ?';
+      SQL += ' where  fky_conta  = ?';
+      SQL += '   and  fky_pessoa = ?';
 
-  db.query(SQL, [req.params.cod_pessoa], (err, result) => {
+  db.query(SQL, [req.headers.cod_conta, req.params.cod_pessoa], (err, result) => {
     if (err){
       return res.status(500).send(err);
     } else{
@@ -339,22 +367,23 @@ app.put("/pessoa/paciente/editar/:cod_pessoa", (req, res) => {
       SQL +=     ' int_quant_filho          = ?,';
       SQL +=     ' int_quant_filho_vivo     = ?,';
       SQL +=     ' mem_dados_resguardado    = ?';
-      SQL += ' where fky_pessoa             = ?';
+      SQL += ' where fky_conta              = ?';
+      SQL += '   and fky_pessoa             = ?';
 
   db.query(SQL, [body.dsc_filiacao_pai, body.dsc_filiacao_mae, body.dsc_religiao, body.dsc_tipo_renda, body.dsc_cidade_ant, body.dat_residencia_cidade, body.dbl_valor_renda,
                  body.fky_curador, body.flg_estado_civil, body.flg_frequenta_religiao, body.flg_possui_filho, body.flg_possui_casa_propria, body.flg_possui_renda, body.flg_paciente_interditado,
-                 body.int_quant_filho, body.int_quant_filho_vivo, body.mem_dados_resguardado, req.params.cod_pessoa], (err, result) =>{
+                 body.int_quant_filho, body.int_quant_filho_vivo, body.mem_dados_resguardado, req.headers.cod_conta, req.params.cod_pessoa], (err, result) =>{
     if (err) console.log(err)
     else{
 
     //Se não encontrou - Insere  
       if (result.affectedRows === 0) {
-        SQL  = ' insert into tbl_paciente (fky_pessoa, dsc_filiacao_pai, dsc_filiacao_mae, dsc_religiao, dsc_tipo_renda, dsc_cidade_ant, dat_residencia_cidade, dbl_valor_renda, fky_curador,';
+        SQL  = ' insert into tbl_paciente (fky_conta, fky_pessoa, dsc_filiacao_pai, dsc_filiacao_mae, dsc_religiao, dsc_tipo_renda, dsc_cidade_ant, dat_residencia_cidade, dbl_valor_renda, fky_curador,';
         SQL +=                           ' flg_estado_civil, flg_frequenta_religiao, flg_possui_filho, flg_possui_casa_propria, flg_possui_renda, flg_paciente_interditado, int_quant_filho,';
         SQL +=                           ' int_quant_filho_vivo, mem_dados_resguardado)';
-        SQL += ' values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        SQL += ' values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
-        db.query(SQL, [body.fky_pessoa, body.dsc_filiacao_pai, body.dsc_filiacao_mae, body.dsc_religiao, body.dsc_tipo_renda, body.dsc_cidade_ant, body.dat_residencia_cidade, body.dbl_valor_renda,
+        db.query(SQL, [req.headers.cod_conta, body.fky_pessoa, body.dsc_filiacao_pai, body.dsc_filiacao_mae, body.dsc_religiao, body.dsc_tipo_renda, body.dsc_cidade_ant, body.dat_residencia_cidade, body.dbl_valor_renda,
                        null, body.flg_estado_civil, body.flg_frequenta_religiao, body.flg_possui_filho, body.flg_possui_casa_propria, body.flg_possui_renda, body.flg_paciente_interditado,
                        body.int_quant_filho, body.int_quant_filho_vivo, body.mem_dados_resguardado], (err, result) =>{
           if (err) console.log(err)
