@@ -11,13 +11,13 @@ const db = mysql.createPool({
   database: 'dados_ports_saude'
 });
 
-app.use((req, res, next) => {
+{/*app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin",  "*");
   res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
   res.header("Access-Control-Allow-Headers", "X-PINGOTHER, Content-Type, Authorization, cod_conta");
 
   next();
-});
+});*/}
 
 app.use(express.static('public/upload')); //Libera acesso a pasta de imagens*/
 
@@ -410,5 +410,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(5000, ()=>{
-  console.log('Servidor Web no ar na porta 5000 002');
+  console.log('Servidor Web no ar na porta 5000 003');
 });
