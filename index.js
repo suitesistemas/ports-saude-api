@@ -23,7 +23,6 @@ app.use(express.static('public/upload')); //Libera acesso a pasta de imagens*/
 
 app.use(express.json());
 app.use(cors());
-cors();
 
 //****** tbl_conta ******/
 //tbl_conta - Login - busca codigo da conta
@@ -227,17 +226,26 @@ app.get("/pessoa/usuario/listar/:cod_pessoa", (req, res) => {
 
 //tbl_usuario - Login - Dados do Usuario
 app.get("/pessoa/usuario/login/:dsc_usuario/:dsc_senha", (req, res) => {
+  let cod_conta = req.headers.cod_conta;
+
   let SQL  = ' select flg_visualizar_resguardado';
       SQL += ' from   tbl_usuario';
       SQL += ' where  fky_conta   = ?';
       SQL += '   and  dsc_usuario = ?';
       SQL +=   ' and  dsc_senha   = ?';
 
-      console.log(req.headers.cod_conta);
+      console.log(cod_conta);
       console.log(req.params.dsc_usuario);
       console.log(req.params.dsc_senha);
+    
+  {if (cod_conta == 'undefined')
+    cod_conta = 1; 
 
-  db.query(SQL, [req.headers.cod_conta, req.params.dsc_usuario, req.params.dsc_senha], (err, result) => {
+    console.log(cod_conta);
+    console.log(req.params.dsc_usuario);
+    console.log(req.params.dsc_senha);
+
+  db.query(SQL, [cod_conta, req.params.dsc_usuario, req.params.dsc_senha], (err, result) => {
     if (err){
       return res.status(500).send(err);
     } else{
@@ -411,5 +419,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(5000, ()=>{
-  console.log('Servidor Web no ar na porta 5000 004');
+  console.log('Servidor Web no ar na porta 5000 005');
 });
