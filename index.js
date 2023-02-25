@@ -16,6 +16,7 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin",  "*");
   res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
   res.header("Access-Control-Allow-Headers", "X-PINGOTHER, Content-Type, Authorization, cod_conta");
+  req.header("Access-Control-Allow-Headers", "X-PINGOTHER, Content-Type, Authorization, cod_conta");
 
   next();
 });
@@ -40,7 +41,6 @@ app.get("/pessoa/conta/login/:dsc_conta", (req, res) => {
     }
   });
 });
-
 
 //****** tbl_pessoa ******
 
@@ -421,5 +421,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(5000, ()=>{
-  console.log('Servidor Web no ar na porta 5000 007');
+  console.log('Servidor Web no ar na porta 5000 008');
 });
