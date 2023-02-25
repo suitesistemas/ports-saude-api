@@ -24,21 +24,6 @@ headers();
   next();
 });*/}
 
-app.use((req, res, next) => {
-  req.header("Access-Control-Allow-Credentials", "true"); 
-  req.header("Access-Control-Allow-Origin", "*");
-  req.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
-  req.header("Access-Control-Allow-Headers", "X-PINGOTHER, Content-Type, Authorization, cod_conta");
-
-  res.header("Access-Control-Allow-Credentials", "true"); 
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
-  res.header("Access-Control-Allow-Headers", "X-PINGOTHER, Content-Type, Authorization, cod_conta");
-  //req.header("Access-Control-Allow-Headers", "X-PINGOTHER, Content-Type, Authorization, cod_conta");
-
-  next();
-})
-
 app.use(express.static('public/upload')); //Libera acesso a pasta de imagens*/
 
 app.use(express.json());
@@ -438,5 +423,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(5000, ()=>{
-  console.log('Servidor Web no ar na porta 5000 016');
+  console.log('Servidor Web no ar na porta 5000 017');
 });

@@ -2,7 +2,7 @@ async function headers() {
     console.log('entrou');
     return [
       {
-        source: '/:path*',
+        source: '/pessoa/usuario/login/:dsc_usuario/:dsc_senha',
         headers: [
           { key: 'Access-Control-Allow-Credentials', value: 'true'},
           { key: 'Access-Control-Allow-Origin',  value: '*'},
