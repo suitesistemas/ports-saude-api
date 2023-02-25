@@ -1,4 +1,5 @@
 async function headers() {
+    console.log('entrou');
     return [
       {
         source: '/:path*',

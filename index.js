@@ -22,7 +22,7 @@ headers();
   //req.header("Access-Control-Allow-Headers", "X-PINGOTHER, Content-Type, Authorization, cod_conta");
 
   next();
-});
+});*/}
 
 app.use((req, res, next) => {
   req.header("Access-Control-Allow-Credentials", "true"); 
@@ -37,7 +37,7 @@ app.use((req, res, next) => {
   //req.header("Access-Control-Allow-Headers", "X-PINGOTHER, Content-Type, Authorization, cod_conta");
 
   next();
-})*/}
+})
 
 app.use(express.static('public/upload')); //Libera acesso a pasta de imagens*/
 
@@ -438,5 +438,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(5000, ()=>{
-  console.log('Servidor Web no ar na porta 5000 014');
+  console.log('Servidor Web no ar na porta 5000 015');
 });
