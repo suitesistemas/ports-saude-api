@@ -22,9 +22,15 @@ const db = mysql.createPool({
 });*/}
 
 app.use((req, res, next) => {
-  req.header("Access-Control-Allow-Origin",  "*");
+  req.header("Access-Control-Allow-Credentials", "true"); 
+  req.header("Access-Control-Allow-Origin", "*");
   req.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
   req.header("Access-Control-Allow-Headers", "X-PINGOTHER, Content-Type, Authorization, cod_conta");
+
+  res.header("Access-Control-Allow-Credentials", "true"); 
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
+  res.header("Access-Control-Allow-Headers", "X-PINGOTHER, Content-Type, Authorization, cod_conta");
   //req.header("Access-Control-Allow-Headers", "X-PINGOTHER, Content-Type, Authorization, cod_conta");
 
   next();
@@ -35,10 +41,10 @@ app.use((req, res, next) => {
     {
       source: '/path*',
       headers: [
-        
-        { key: 'Access-Control-Allow-Origin',  value: '*'};
-        { key: 'Access-Control-Allow-Methods', value: 'GET, OPTIONS, PATCH, PUT, POST, DELETE'};
-        { key: 'Access-Control-Allow-Headers', value: 'X-PINGOTHER, Content-Type, Authorization, cod_conta'};
+        { key: 'Access-Control-Allow-Credentials', value: 'true'},
+        { key: 'Access-Control-Allow-Origin',  value: '*'},
+        { key: 'Access-Control-Allow-Methods', value: 'GET, OPTIONS, PATCH, PUT, POST, DELETE'},
+        { key: 'Access-Control-Allow-Headers', value: 'X-PINGOTHER, Content-Type, Authorization, cod_conta'}
       ],
     },
   ];
@@ -443,5 +449,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(5000, ()=>{
-  console.log('Servidor Web no ar na porta 5000 009');
+  console.log('Servidor Web no ar na porta 5000 011');
 });
