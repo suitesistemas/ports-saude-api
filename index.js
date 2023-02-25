@@ -1,6 +1,7 @@
-import express from "express";
-import mysql   from "mysql";
-import cors    from "cors";
+import express    from "express";
+import mysql      from "mysql";
+import cors       from "cors";
+import headers    from "./next.config.js";
 
 const app = express();
 app.use(cors());
@@ -435,5 +436,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(5000, ()=>{
-  console.log('Servidor Web no ar na porta 5000 012 correcao');
+  console.log('Servidor Web no ar na porta 5000 013');
 });

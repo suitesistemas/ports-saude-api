@@ -1,5 +1,4 @@
-module.exports = {
-  async headers() {
+async function headers() {
     return [
       {
         source: '/:path*',
@@ -11,5 +10,6 @@ module.exports = {
         ],
       },
     ];
-  },
-};
+  };
+
+export default headers;
