@@ -19,7 +19,7 @@ const db = mysql.createPool({
   //req.header("Access-Control-Allow-Headers", "X-PINGOTHER, Content-Type, Authorization, cod_conta");
 
   next();
-});*/}
+});
 
 app.use((req, res, next) => {
   req.header("Access-Control-Allow-Credentials", "true"); 
@@ -34,21 +34,7 @@ app.use((req, res, next) => {
   //req.header("Access-Control-Allow-Headers", "X-PINGOTHER, Content-Type, Authorization, cod_conta");
 
   next();
-})
-
-{/*async headers() {
-  return [
-    {
-      source: '/path*',
-      headers: [
-        { key: 'Access-Control-Allow-Credentials', value: 'true'},
-        { key: 'Access-Control-Allow-Origin',  value: '*'},
-        { key: 'Access-Control-Allow-Methods', value: 'GET, OPTIONS, PATCH, PUT, POST, DELETE'},
-        { key: 'Access-Control-Allow-Headers', value: 'X-PINGOTHER, Content-Type, Authorization, cod_conta'}
-      ],
-    },
-  ];
-};*/}
+})*/}
 
 app.use(express.static('public/upload')); //Libera acesso a pasta de imagens*/
 
@@ -449,5 +435,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(5000, ()=>{
-  console.log('Servidor Web no ar na porta 5000 011');
+  console.log('Servidor Web no ar na porta 5000 012');
 });
