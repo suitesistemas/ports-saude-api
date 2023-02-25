@@ -31,17 +31,17 @@ app.use(express.json());
 //****** tbl_conta ******/
 //tbl_conta - Login - busca codigo da conta
 app.get("/pessoa/conta/login/:dsc_conta", (req, res) => {
-  let SQL  = ' select cod_conta';
-      SQL += ' from   tbl_conta';
-      SQL += ' where  dsc_conta = ?';
+    let SQL  = ' select cod_conta';
+        SQL += ' from   tbl_conta';
+        SQL += ' where  dsc_conta = ?';
 
-  db.query(SQL, [req.params.dsc_conta], (err, result) => {
-    if (err){
-      return res.status(500).send(err);
-    } else{
-      res.send(result);
-    }
-  });
+    db.query(SQL, [req.params.dsc_conta], (err, result) => {
+      if (err){
+        return res.status(500).send(err);
+      } else{
+        res.send(result);
+      }
+    });
 });
 
 //****** tbl_pessoa ******
@@ -228,28 +228,14 @@ app.get("/pessoa/usuario/listar/:cod_pessoa", (req, res) => {
 });
 
 //tbl_usuario - Login - Dados do Usuario
-app.get("/pessoa/usuario/login/:dsc_usuario/:dsc_senha", (req, res) => {
-  let cod_conta = req.headers.cod_conta;
-
+app.get("/pessoa/usuario/login/:cod_conta/:dsc_usuario/:dsc_senha", (req, res) => {
   let SQL  = ' select flg_visualizar_resguardado';
       SQL += ' from   tbl_usuario';
       SQL += ' where  fky_conta   = ?';
       SQL += '   and  dsc_usuario = ?';
       SQL +=   ' and  dsc_senha   = ?';
 
-      console.log(cod_conta);
-      console.log(req.params.dsc_usuario);
-      console.log(req.params.dsc_senha);
-    
-    if (cod_conta == 'undefined'){
-      cod_conta = 1; 
-    }
-
-    console.log(cod_conta);
-    console.log(req.params.dsc_usuario);
-    console.log(req.params.dsc_senha);
-
-  db.query(SQL, [cod_conta, req.params.dsc_usuario, req.params.dsc_senha], (err, result) => {
+  db.query(SQL, [req.params.cod_conta, req.params.dsc_usuario, req.params.dsc_senha], (err, result) => {
     if (err){
       return res.status(500).send(err);
     } else{
@@ -423,5 +409,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(5000, ()=>{
-  console.log('Servidor Web no ar na porta 5000 017');
+  console.log('Servidor Web no ar na porta 5000 020');
 });
