@@ -30,7 +30,7 @@ app.use((req, res, next) => {
   next();
 })
 
-async headers() {
+{/*async headers() {
   return [
     {
       source: '/path*',
@@ -42,7 +42,7 @@ async headers() {
       ],
     },
   ];
-};
+};*/}
 
 app.use(express.static('public/upload')); //Libera acesso a pasta de imagens*/
 
