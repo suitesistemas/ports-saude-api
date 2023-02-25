@@ -238,8 +238,9 @@ app.get("/pessoa/usuario/login/:dsc_usuario/:dsc_senha", (req, res) => {
       console.log(req.params.dsc_usuario);
       console.log(req.params.dsc_senha);
     
-  {if (cod_conta == 'undefined')
-    cod_conta = 1; 
+    if (cod_conta == 'undefined'){
+      cod_conta = 1; 
+    }
 
     console.log(cod_conta);
     console.log(req.params.dsc_usuario);
@@ -419,5 +420,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(5000, ()=>{
-  console.log('Servidor Web no ar na porta 5000 005');
+  console.log('Servidor Web no ar na porta 5000 006');
 });
