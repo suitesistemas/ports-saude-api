@@ -12,19 +12,41 @@ const db = mysql.createPool({
   database: 'dados_ports_saude'
 });
 
-app.use((req, res, next) => {
+{/*app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin",  "*");
   res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
   res.header("Access-Control-Allow-Headers", "X-PINGOTHER, Content-Type, Authorization, cod_conta");
-  req.header("Access-Control-Allow-Headers", "X-PINGOTHER, Content-Type, Authorization, cod_conta");
+  //req.header("Access-Control-Allow-Headers", "X-PINGOTHER, Content-Type, Authorization, cod_conta");
 
   next();
-});
+});*/}
+
+app.use((req, res, next) => {
+  req.header("Access-Control-Allow-Origin",  "*");
+  req.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
+  req.header("Access-Control-Allow-Headers", "X-PINGOTHER, Content-Type, Authorization, cod_conta");
+  //req.header("Access-Control-Allow-Headers", "X-PINGOTHER, Content-Type, Authorization, cod_conta");
+
+  next();
+})
+
+async headers() {
+  return [
+    {
+      source: '/path*',
+      headers: [
+        
+        { key: 'Access-Control-Allow-Origin',  value: '*'};
+        { key: 'Access-Control-Allow-Methods', value: 'GET, OPTIONS, PATCH, PUT, POST, DELETE'};
+        { key: 'Access-Control-Allow-Headers', value: 'X-PINGOTHER, Content-Type, Authorization, cod_conta'};
+      ],
+    },
+  ];
+};
 
 app.use(express.static('public/upload')); //Libera acesso a pasta de imagens*/
 
 app.use(express.json());
-
 
 //****** tbl_conta ******/
 //tbl_conta - Login - busca codigo da conta
@@ -421,5 +443,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(5000, ()=>{
-  console.log('Servidor Web no ar na porta 5000 008');
+  console.log('Servidor Web no ar na porta 5000 009');
 });
