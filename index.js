@@ -3,6 +3,7 @@ import mysql   from "mysql";
 import cors    from "cors";
 
 const app = express();
+app.use(cors());
 
 const db = mysql.createPool({
   host: "suitesistemas.cbtdu4gfiiub.us-east-1.rds.amazonaws.com",
@@ -11,18 +12,18 @@ const db = mysql.createPool({
   database: 'dados_ports_saude'
 });
 
-{/*app.use((req, res, next) => {
+app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin",  "*");
   res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
   res.header("Access-Control-Allow-Headers", "X-PINGOTHER, Content-Type, Authorization, cod_conta");
 
   next();
-});*/}
+});
 
 app.use(express.static('public/upload')); //Libera acesso a pasta de imagens*/
 
 app.use(express.json());
-app.use(cors());
+
 
 //****** tbl_conta ******/
 //tbl_conta - Login - busca codigo da conta
