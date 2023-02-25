@@ -23,6 +23,7 @@ app.use(express.static('public/upload')); //Libera acesso a pasta de imagens*/
 
 app.use(express.json());
 app.use(cors());
+cors();
 
 //****** tbl_conta ******/
 //tbl_conta - Login - busca codigo da conta
@@ -410,5 +411,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(5000, ()=>{
-  console.log('Servidor Web no ar na porta 5000 003');
+  console.log('Servidor Web no ar na porta 5000 004');
 });
