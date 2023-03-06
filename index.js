@@ -330,6 +330,226 @@ app.delete("/pessoa/contato/excluir/:cod_conta/:fky_pessoa/:fky_contato", (req, 
   });
 });
 
+//****** Pessoa Tratamento ******/
+
+//tbl_paciente_tratamento - Listar por pessoa
+app.get("/pessoa/tratamento/listar/:cod_conta/:cod_pessoa", (req, res) => {
+  let SQL  = ' select tbl_paciente_tratamento.fky_especialidade_medico  cod_registro,';
+      SQL += '        tbl_paciente_tratamento.fky_paciente,';      
+      SQL += '        tbl_especialidade_medico.dsc_especialidade_medico dsc_registro';      
+      SQL += ' from   tbl_paciente_tratamento';
+      SQL += ' inner join tbl_especialidade_medico on (tbl_paciente_tratamento.fky_especialidade_medico = tbl_especialidade_medico.cod_especialidade_medico)';      
+      SQL += ' where tbl_paciente_tratamento.fky_conta  = ?';
+      SQL += '   and tbl_paciente_tratamento.fky_paciente = ?';
+
+  db.query(SQL, [req.params.cod_conta, req.params.cod_pessoa], (err, result) =>{
+    if (err) console.log(err)
+    else res.send(result);
+  });
+});
+
+/*tbl_paciente_tratamento - Inserir*/
+app.post("/pessoa/tratamento/inserir/:cod_conta", (req, res) => {
+  const body = req.body;
+
+  let SQL  = ' insert into tbl_paciente_tratamento (fky_conta, fky_paciente, fky_especialidade_medico)';
+      SQL += ' values (?, ?, ?)';
+
+  db.query(SQL, [req.params.cod_conta, body.fky_paciente, body.fky_especialidade_medico], (err, result) =>{
+    if (err) console.log(err)
+    else res.send(result.insertid);
+  });
+});
+
+//tbl_paciente_tratamento - Excluir
+app.delete("/pessoa/tratamento/excluir/:cod_conta/:fky_paciente/:fky_especialdade_medico", (req, res) => {
+  let SQL  = ' delete from tbl_paciente_tratamento';
+      SQL += ' where fky_conta                = ?';
+      SQL += '   and fky_paciente             = ?';
+      SQL += '   and fky_especialidade_medico = ?'
+
+  db.query(SQL, [req.params.cod_conta, req.params.fky_paciente, req.params.fky_especialdade_medico], (err, result) =>{
+    if (err) console.log(err)
+    else res.send(result);
+  });
+});
+
+//****** Pessoa Doenca ******/
+
+//tbl_paciente_doenca - Listar por pessoa
+app.get("/pessoa/doenca/listar/:cod_conta/:cod_pessoa", (req, res) => {
+  let SQL  = ' select tbl_paciente_doenca.fky_doenca cod_registro,';
+      SQL += '        tbl_paciente_doenca.fky_paciente,';      
+      SQL += '        tbl_doenca.dsc_doenca dsc_registro';      
+      SQL += ' from   tbl_paciente_doenca';
+      SQL += ' inner join tbl_doenca on (tbl_paciente_doenca.fky_doenca = tbl_doenca.cod_doenca)';      
+      SQL += ' where tbl_paciente_doenca.fky_conta  = ?';
+      SQL += '   and tbl_paciente_doenca.fky_paciente = ?';
+
+  db.query(SQL, [req.params.cod_conta, req.params.cod_pessoa], (err, result) =>{
+    if (err) console.log(err)
+    else res.send(result);
+  });
+});
+
+/*tbl_paciente_doenca - Inserir*/
+app.post("/pessoa/doenca/inserir/:cod_conta", (req, res) => {
+  const body = req.body;
+
+  let SQL  = ' insert into tbl_paciente_doenca (fky_conta, fky_paciente, fky_doenca)';
+      SQL += ' values (?, ?, ?)';
+
+  db.query(SQL, [req.params.cod_conta, body.fky_paciente, body.fky_doenca], (err, result) =>{
+    if (err) console.log(err)
+    else res.send(result.insertid);
+  });
+});
+
+//tbl_paciente_doenca - Excluir
+app.delete("/pessoa/doenca/excluir/:cod_conta/:fky_paciente/:fky_doenca", (req, res) => {
+  let SQL  = ' delete from tbl_paciente_doenca';
+      SQL += ' where fky_conta    = ?';
+      SQL += '   and fky_paciente = ?';
+      SQL += '   and fky_doenca  = ?'
+
+  db.query(SQL, [req.params.cod_conta, req.params.fky_paciente, req.params.fky_doenca], (err, result) =>{
+    if (err) console.log(err)
+    else res.send(result);
+  });
+});
+
+//****** Pessoa Vacina ******/
+
+//tbl_paciente_vacina - Listar por pessoa
+app.get("/pessoa/vacina/listar/:cod_conta/:cod_pessoa", (req, res) => {
+  let SQL  = ' select tbl_paciente_vacina.fky_vacina cod_registro,';
+      SQL += '        tbl_paciente_vacina.fky_paciente,';
+      SQL += '        tbl_vacina.dsc_vacina dsc_registro';
+      SQL += ' from   tbl_paciente_vacina';
+      SQL += ' inner join tbl_vacina on (tbl_paciente_vacina.fky_vacina = tbl_vacina.cod_vacina)';      
+      SQL += ' where tbl_paciente_vacina.fky_conta  = ?';
+      SQL += '   and tbl_paciente_vacina.fky_paciente = ?';
+
+  db.query(SQL, [req.params.cod_conta, req.params.cod_pessoa], (err, result) =>{
+    if (err) console.log(err)
+    else res.send(result);
+  });
+});
+
+/*tbl_paciente_vacina - Inserir*/
+app.post("/pessoa/vacina/inserir/:cod_conta", (req, res) => {
+  const body = req.body;
+
+  let SQL  = ' insert into tbl_paciente_vacina (fky_conta, fky_paciente, fky_vacina, num_dose, dat_dose)';
+      SQL += ' values (?, ?, ?, ?, ?)';
+
+  db.query(SQL, [req.params.cod_conta, body.fky_paciente, body.fky_vacina, body.num_dose, body.dat_dose], (err, result) =>{
+    if (err) console.log(err)
+    else res.send(result.insertid);
+  });
+});
+
+//tbl_paciente_vacina - Excluir
+app.delete("/pessoa/vacina/excluir/:cod_conta/:fky_paciente/:fky_vacina", (req, res) => {
+  let SQL  = ' delete from tbl_paciente_vacina';
+      SQL += ' where fky_conta    = ?';
+      SQL += '   and fky_paciente = ?';
+      SQL += '   and fky_vacina   = ?'
+
+  db.query(SQL, [req.params.cod_conta, req.params.fky_paciente, req.params.fky_vacina], (err, result) =>{
+    if (err) console.log(err)
+    else res.send(result);
+  });
+});
+
+//****** Pessoa Servico Saude ******/
+
+//tbl_paciente_servico_saude - Listar por pessoa
+app.get("/pessoa/servico_saude/listar/:cod_conta/:cod_pessoa", (req, res) => {
+  let SQL  = ' select tbl_paciente_servico_saude.fky_servico_saude cod_registro,';
+      SQL += '        tbl_paciente_servico_saude.fky_paciente,';
+      SQL += '        tbl_servico_saude.dsc_servico_saude dsc_registro';
+      SQL += ' from   tbl_paciente_servico_saude';
+      SQL += ' inner join tbl_servico_saude on (tbl_paciente_servico_saude.fky_servico_saude = tbl_servico_saude.cod_servico_saude)';      
+      SQL += ' where tbl_paciente_servico_saude.fky_conta  = ?';
+      SQL += '   and tbl_paciente_servico_saude.fky_paciente = ?';
+
+  db.query(SQL, [req.params.cod_conta, req.params.cod_pessoa], (err, result) =>{
+    if (err) console.log(err)
+    else res.send(result);
+  });
+});
+
+/*tbl_paciente_servico_saude - Inserir*/
+app.post("/pessoa/servico_saude/inserir/:cod_conta", (req, res) => {
+  const body = req.body;
+
+  let SQL  = ' insert into tbl_paciente_servico_saude (fky_conta, fky_paciente, fky_servico_saude)';
+      SQL += ' values (?, ?, ?)';
+
+  db.query(SQL, [req.params.cod_conta, body.fky_paciente, body.fky_servico_saude], (err, result) =>{
+    if (err) console.log(err)
+    else res.send(result.insertid);
+  });
+});
+
+//tbl_paciente_servico_saude - Excluir
+app.delete("/pessoa/servico_saude/excluir/:cod_conta/:fky_paciente/:fky_servico_saude", (req, res) => {
+  let SQL  = ' delete from tbl_paciente_servico_saude';
+      SQL += ' where fky_conta    = ?';
+      SQL += '   and fky_paciente = ?';
+      SQL += '   and fky_servico_saude   = ?'
+
+  db.query(SQL, [req.params.cod_conta, req.params.fky_paciente, req.params.fky_servico_saude], (err, result) =>{
+    if (err) console.log(err)
+    else res.send(result);
+  });
+});
+
+//****** Pessoa Programa Social ******/
+
+//tbl_paciente_programa_social - Listar por pessoa
+app.get("/pessoa/programa_social/listar/:cod_conta/:cod_pessoa", (req, res) => {
+  let SQL  = ' select tbl_paciente_programa_social.fky_programa_social cod_registro,';
+      SQL += '        tbl_paciente_programa_social.fky_paciente,';
+      SQL += '        tbl_programa_social.dsc_programa_social dsc_registro';
+      SQL += ' from   tbl_paciente_programa_social';
+      SQL += ' inner join tbl_programa_social on (tbl_paciente_programa_social.fky_programa_social = tbl_programa_social.cod_programa_social)';      
+      SQL += ' where tbl_paciente_programa_social.fky_conta  = ?';
+      SQL += '   and tbl_paciente_programa_social.fky_paciente = ?';
+
+  db.query(SQL, [req.params.cod_conta, req.params.cod_pessoa], (err, result) =>{
+    if (err) console.log(err)
+    else res.send(result);
+  });
+});
+
+/*tbl_paciente_programa_social - Inserir*/
+app.post("/pessoa/programa_social/inserir/:cod_conta", (req, res) => {
+  const body = req.body;
+
+  let SQL  = ' insert into tbl_paciente_programa_social (fky_conta, fky_paciente, fky_programa_social)';
+      SQL += ' values (?, ?, ?)';
+
+  db.query(SQL, [req.params.cod_conta, body.fky_paciente, body.fky_programa_social], (err, result) =>{
+    if (err) console.log(err)
+    else res.send(result.insertid);
+  });
+});
+
+//tbl_paciente_programa_social - Excluir
+app.delete("/pessoa/programa_social/excluir/:cod_conta/:fky_paciente/:fky_programa_social", (req, res) => {
+  let SQL  = ' delete from tbl_paciente_programa_social';
+      SQL += ' where fky_conta    = ?';
+      SQL += '   and fky_paciente = ?';
+      SQL += '   and fky_programa_social   = ?'
+
+  db.query(SQL, [req.params.cod_conta, req.params.fky_paciente, req.params.fky_programa_social], (err, result) =>{
+    if (err) console.log(err)
+    else res.send(result);
+  });
+});
+
 /****** Paciente ******/
 
 //tbl_paciente - Listar - Dados do Paciente - 1 Registro
@@ -369,13 +589,37 @@ app.put("/pessoa/paciente/editar/:cod_conta/:cod_pessoa", (req, res) => {
       SQL +=     ' flg_paciente_interditado = ?,';
       SQL +=     ' int_quant_filho          = ?,';
       SQL +=     ' int_quant_filho_vivo     = ?,';
-      SQL +=     ' mem_dados_resguardado    = ?';
-      SQL += ' where fky_conta              = ?';
-      SQL += '   and fky_pessoa             = ?';
+      SQL +=     ' mem_dados_resguardado    = ?,';
+
+      SQL +=     ' dsc_plano_saude            = ?,';
+      SQL +=     ' dsc_paciente_lucido        = ?,';
+      SQL +=     ' dsc_cirurgia_feita         = ?,';
+      SQL +=     ' dsc_obs_covid_19           = ?,';
+      SQL +=     ' dsc_usa_medicamento        = ?,';
+      SQL +=     ' dsc_usou_outra_instituicao = ?,';
+      SQL +=     ' dsc_condicao_habitual      = ?,';
+      SQL +=     ' dbl_valor_medicamento      = ?,';
+      SQL +=     ' dat_teve_covid_19          = ?,';
+      SQL +=     ' flg_medicamento_caro       = ?,';
+      SQL +=     ' flg_auxilio_banho          = ?,';
+      SQL +=     ' flg_auxilio_alimentacao    = ?,';
+      SQL +=     ' flg_auxilio_locomocao      = ?,';
+      SQL +=     ' flg_auxilio_vestimenta     = ?,';
+      SQL +=     ' flg_auxilio_higiene        = ?,';
+      SQL +=     ' flg_usa_frauda             = ?,';
+      SQL +=     ' flg_paciente_lucido        = ?,';
+      SQL +=     ' flg_fez_cirurgia           = ?,';
+      SQL +=     ' flg_teve_covid_19          = ?,';
+      SQL +=     ' num_cartao_sus             = ?';
+      SQL += ' where fky_conta                = ?';
+      SQL += '   and fky_pessoa               = ?';
 
   db.query(SQL, [body.dsc_filiacao_pai, body.dsc_filiacao_mae, body.dsc_religiao, body.dsc_tipo_renda, body.dsc_cidade_ant, body.dat_residencia_cidade, body.dbl_valor_renda,
                  body.fky_curador, body.flg_estado_civil, body.flg_frequenta_religiao, body.flg_possui_filho, body.flg_possui_casa_propria, body.flg_possui_renda, body.flg_paciente_interditado,
-                 body.int_quant_filho, body.int_quant_filho_vivo, body.mem_dados_resguardado, req.params.cod_conta, req.params.cod_pessoa], (err, result) =>{
+                 body.int_quant_filho, body.int_quant_filho_vivo, body.mem_dados_resguardado, body.dsc_plano_saude, body.dsc_paciente_lucido, body.dsc_cirurgia_feita, body.dsc_obs_covid_19,
+                 body.dsc_usa_medicamento, body.dsc_usou_outra_instituicao, body.dsc_condicao_habitual, body.dbl_valor_medicamento, body.dat_teve_covid_19, body.flg_medicamento_caro, body.flg_auxilio_banho,
+                 body.flg_auxilio_alimentacao, body.flg_auxilio_locomocao, body.flg_auxilio_vestimenta, body.flg_auxilio_higiene, body.flg_usa_frauda, body.flg_paciente_lucido,
+                 body.flg_fez_cirurgia, body.flg_teve_covid_19, body.num_cartao_sus, req.params.cod_conta, req.params.cod_pessoa], (err, result) =>{
     if (err) console.log(err)
     else{
 
@@ -383,12 +627,15 @@ app.put("/pessoa/paciente/editar/:cod_conta/:cod_pessoa", (req, res) => {
       if (result.affectedRows === 0) {
         SQL  = ' insert into tbl_paciente (fky_conta, fky_pessoa, dsc_filiacao_pai, dsc_filiacao_mae, dsc_religiao, dsc_tipo_renda, dsc_cidade_ant, dat_residencia_cidade, dbl_valor_renda, fky_curador,';
         SQL +=                           ' flg_estado_civil, flg_frequenta_religiao, flg_possui_filho, flg_possui_casa_propria, flg_possui_renda, flg_paciente_interditado, int_quant_filho,';
-        SQL +=                           ' int_quant_filho_vivo, mem_dados_resguardado)';
-        SQL += ' values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        SQL +=                           ' int_quant_filho_vivo, mem_dados_resguardado, dsc_plano_saude, dsc_paciente_lucido, dsc_cirurgia_feita, dsc_obs_covid_19, dsc_usa_medicamento, dsc_usou_outra_instituicao, dsc_condicao_habitual, dbl_valor_medicamento, dat_teve_covid_19, flg_medicamento_caro, flg_auxilio_banho, flg_auxilio_alimentacao, flg_auxilio_locomocao, flg_auxilio_vestimenta, flg_auxilio_higiene, flg_usa_frauda, flg_paciente_lucido, flg_fez_cirurgia, flg_teve_covid_19, num_cartao_sus)';
+        SQL += ' values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
-        db.query(SQL, [req.params.cod_conta, body.fky_pessoa, body.dsc_filiacao_pai, body.dsc_filiacao_mae, body.dsc_religiao, body.dsc_tipo_renda, body.dsc_cidade_ant, body.dat_residencia_cidade, body.dbl_valor_renda,
-                       null, body.flg_estado_civil, body.flg_frequenta_religiao, body.flg_possui_filho, body.flg_possui_casa_propria, body.flg_possui_renda, body.flg_paciente_interditado,
-                       body.int_quant_filho, body.int_quant_filho_vivo, body.mem_dados_resguardado], (err, result) =>{
+        db.query(SQL, [req.params.cod_conta, body.fky_pessoa, body.dsc_filiacao_pai, body.dsc_filiacao_mae, body.dsc_religiao, body.dsc_tipo_renda, body.dsc_cidade_ant, body.dat_residencia_cidade,
+                       body.dbl_valor_renda, null, body.flg_estado_civil, body.flg_frequenta_religiao, body.flg_possui_filho, body.flg_possui_casa_propria, body.flg_possui_renda,
+                       body.flg_paciente_interditado, body.int_quant_filho, body.int_quant_filho_vivo, body.mem_dados_resguardado, body.dsc_plano_saude, body.dsc_paciente_lucido,
+                       body.dsc_cirurgia_feita, body.dsc_obs_covid_19, body.dsc_usa_medicamento, body.dsc_usou_outra_instituicao, body.dsc_condicao_habitual, body.dbl_valor_medicamento, body.dat_teve_covid_19,
+                       body.flg_medicamento_caro, body.flg_auxilio_banho, body.flg_auxilio_alimentacao, body.flg_auxilio_locomocao, body.flg_auxilio_vestimenta, body.flg_auxilio_higiene,
+                       body.flg_usa_frauda, body.flg_paciente_lucido, body.flg_fez_cirurgia, body.flg_teve_covid_19, body.num_cartao_sus], (err, result) =>{
           if (err) console.log(err)
           else res.send(result.insertid);
         });
@@ -402,7 +649,90 @@ app.put("/pessoa/paciente/editar/:cod_conta/:cod_pessoa", (req, res) => {
   });
 });
 
-/****** ******/
+/****** Especialidade Medico ******/
+
+//tbl_especialidade_medico - Listar
+app.get("/especialidade_medico/listar/:cod_conta", (req, res) => {
+  let lFiltro =  ' where fky_conta = ?';      
+
+  let SQL  = ' select *';
+      SQL += ' from   tbl_especialidade_medico';
+      SQL += lFiltro; //where
+      SQL += ' order by dsc_especialidade_medico';
+
+  db.query(SQL, [req.params.cod_conta], (err, result) => {
+    if (err) console.log(err)
+    else res.send(result);
+  });
+});
+
+/****** Doença ******/
+
+//tbl_doenca - Listar
+app.get("/doenca/listar/:cod_conta", (req, res) => {
+  let lFiltro =  ' where fky_conta = ?';      
+
+  let SQL  = ' select *';
+      SQL += ' from   tbl_doenca';
+      SQL += lFiltro; //where
+      SQL += ' order by dsc_doenca';
+
+  db.query(SQL, [req.params.cod_conta], (err, result) => {
+    if (err) console.log(err)
+    else res.send(result);
+  });
+});
+
+/****** Vacina ******/
+
+//tbl_vacina - Listar
+app.get("/vacina/listar/:cod_conta", (req, res) => {
+  let lFiltro =  ' where fky_conta = ?';      
+
+  let SQL  = ' select *';
+      SQL += ' from   tbl_vacina';
+      SQL += lFiltro; //where
+      SQL += ' order by dsc_vacina';
+
+  db.query(SQL, [req.params.cod_conta], (err, result) => {
+    if (err) console.log(err)
+    else res.send(result);
+  });
+});
+
+/****** Serviço Saude ******/
+
+//tbl_servico_saude - Listar
+app.get("/servico_saude/listar/:cod_conta", (req, res) => {
+  let lFiltro =  ' where fky_conta = ?';      
+
+  let SQL  = ' select *';
+      SQL += ' from   tbl_servico_saude';
+      SQL += lFiltro; //where
+      SQL += ' order by dsc_servico_saude';
+
+  db.query(SQL, [req.params.cod_conta], (err, result) => {
+    if (err) console.log(err)
+    else res.send(result);
+  });
+});
+
+/****** Programa Social ******/
+
+//tbl_programa_social - Listar
+app.get("/programa_social/listar/:cod_conta", (req, res) => {
+  let lFiltro =  ' where fky_conta = ?';      
+
+  let SQL  = ' select *';
+      SQL += ' from   tbl_programa_social';
+      SQL += lFiltro; //where
+      SQL += ' order by dsc_programa_social';
+
+  db.query(SQL, [req.params.cod_conta], (err, result) => {
+    if (err) console.log(err)
+    else res.send(result);
+  });
+});
 
 app.get("/", (req, res) => {
   res.send("<h1>Servidor Web no ar na porta 5000</h1>")
