@@ -590,7 +590,8 @@ app.put("/pessoa/paciente/editar/:cod_conta/:cod_pessoa", (req, res) => {
       SQL +=     ' int_quant_filho          = ?,';
       SQL +=     ' int_quant_filho_vivo     = ?,';
       SQL +=     ' mem_dados_resguardado    = ?,';
-
+  
+    //Aba Social
       SQL +=     ' dsc_plano_saude            = ?,';
       SQL +=     ' dsc_paciente_lucido        = ?,';
       SQL +=     ' dsc_cirurgia_feita         = ?,';
@@ -610,32 +611,138 @@ app.put("/pessoa/paciente/editar/:cod_conta/:cod_pessoa", (req, res) => {
       SQL +=     ' flg_paciente_lucido        = ?,';
       SQL +=     ' flg_fez_cirurgia           = ?,';
       SQL +=     ' flg_teve_covid_19          = ?,';
-      SQL +=     ' num_cartao_sus             = ?';
-      SQL += ' where fky_conta                = ?';
-      SQL += '   and fky_pessoa               = ?';
+      SQL +=     ' num_cartao_sus             = ?,';
+
+    //Aba Saude
+      SQL +=     ' mem_diagnostico_medico            = ?,';
+      SQL +=     ' mem_diagnostico_fisioterapico     = ?,';
+      SQL +=     ' dsc_diagnostico_fisioterapico_qp  = ?,';
+      SQL +=     ' dsc_diagnostico_fisioterapico_hma = ?,';
+      SQL +=     ' dsc_diagnostico_fisioterapico_hp  = ?,';
+      SQL +=     ' dsc_diagnostico_fisioterapico_hf  = ?,';
+
+    //Aba Fisico
+      SQL +=     ' dsc_pressao_arterial        = ?,';
+      SQL +=     ' dsc_frequencia_cardiaca     = ?,';
+      SQL +=     ' dsc_frequencia_pulso        = ?,';
+      SQL +=     ' dsc_frequencia_respiratoria = ?,';
+      SQL +=     ' dsc_temperatura_corporal    = ?,';    
+      
+      SQL +=     ' flg_postura_cabeca          = ?,';
+      SQL +=     ' flg_postura_ombro           = ?,';
+      SQL +=     ' flg_postura_clavicula       = ?,';
+      SQL +=     ' flg_postura_cotovelo        = ?,';
+      SQL +=     ' flg_postura_antebraco       = ?,';
+      SQL +=     ' flg_postura_eias            = ?,';
+      SQL +=     ' flg_postura_joelho          = ?,';
+      SQL +=     ' flg_postura_patela          = ?,';
+      SQL +=     ' flg_postura_pe              = ?,';
+      SQL +=     ' flg_postura_tornozelo       = ?,';
+      SQL +=     ' flg_postura_coluna_cervical = ?,';
+      SQL +=     ' flg_postura_coluna_toracica = ?,';
+      SQL +=     ' flg_postura_coluna_lombar   = ?,';
+
+      SQL +=     ' flg_sistema_osteomioarticular = ?,';
+
+      SQL +=     ' flg_tonus_muscular = ?,';
+      
+      SQL +=     ' flg_forca_muscular_mmss = ?,';
+      SQL +=     ' flg_forca_muscular_mmii = ?,';
+      SQL +=     ' flg_amplitude_muscular  = ?,';
+      SQL +=     ' dsc_adm_passiva_mmss    = ?,';
+      SQL +=     ' dsc_adm_passiva_mmii    = ?,';
+      SQL +=     ' dsc_adm_ativa_mmss      = ?,';
+      SQL +=     ' dsc_adm_ativa_mmii      = ?,';
+      
+      SQL +=     ' dsc_tegumentar_pele           = ?,';
+      SQL +=     ' flg_tegumentar_elasticidade   = ?,';
+      SQL +=     ' flg_tegumentar_desidratacao   = ?,';
+      SQL +=     ' flg_tegumentar_mancha         = ?,';
+      SQL +=     ' dsc_local_mancha              = ?,';
+      SQL +=     ' flg_tegumentar_coloracao      = ?,';
+      SQL +=     ' dsc_local_coloracao           = ?,';
+      SQL +=     ' flg_tegumentar_temperatura    = ?,';
+      SQL +=     ' dsc_local_temperatura         = ?,';
+      SQL +=     ' flg_tegumentar_sensibilidade  = ?,';
+      SQL +=     ' dsc_local_sensibilidade       = ?,';
+      
+      SQL +=     ' dsc_equilibrio_mao_cabeca   = ?,';
+      SQL +=     ' dsc_equilibrio_mao_ombro    = ?,';      
+      SQL +=     ' dsc_equilibrio_cruzar_perna = ?,';
+
+      SQL +=     ' dsc_coordenacao_msd              = ?,';
+      SQL +=     ' dsc_coordenacao_mse              = ?,';
+      SQL +=     ' dsc_coordenacao_nariz_msd        = ?,';
+      SQL +=     ' dsc_coordenacao_nariz_mse        = ?,';
+      SQL +=     ' dsc_coordenacao_motricidade_fina = ?,';
+      SQL +=     ' dsc_coordenacao_alcance          = ?,';
+      SQL +=     ' dsc_coordenacao_preensao         = ?,';
+      SQL +=     ' dsc_coordenacao_manipulacao      = ?,';
+      SQL +=     ' dsc_coordenacao_cognitivo        = ?,';
+      SQL +=     ' dsc_coordenacao_psiquiatrico     = ?,';
+      SQL +=     ' dsc_coordenacao_psicologico      = ?';
+
+      SQL += ' where fky_conta  = ?';
+      SQL += '   and fky_pessoa = ?';
 
   db.query(SQL, [body.dsc_filiacao_pai, body.dsc_filiacao_mae, body.dsc_religiao, body.dsc_tipo_renda, body.dsc_cidade_ant, body.dat_residencia_cidade, body.dbl_valor_renda,
                  body.fky_curador, body.flg_estado_civil, body.flg_frequenta_religiao, body.flg_possui_filho, body.flg_possui_casa_propria, body.flg_possui_renda, body.flg_paciente_interditado,
                  body.int_quant_filho, body.int_quant_filho_vivo, body.mem_dados_resguardado, body.dsc_plano_saude, body.dsc_paciente_lucido, body.dsc_cirurgia_feita, body.dsc_obs_covid_19,
-                 body.dsc_usa_medicamento, body.dsc_usou_outra_instituicao, body.dsc_condicao_habitual, body.dbl_valor_medicamento, body.dat_teve_covid_19, body.flg_medicamento_caro, body.flg_auxilio_banho,
-                 body.flg_auxilio_alimentacao, body.flg_auxilio_locomocao, body.flg_auxilio_vestimenta, body.flg_auxilio_higiene, body.flg_usa_frauda, body.flg_paciente_lucido,
-                 body.flg_fez_cirurgia, body.flg_teve_covid_19, body.num_cartao_sus, req.params.cod_conta, req.params.cod_pessoa], (err, result) =>{
+                 body.dsc_usa_medicamento, body.dsc_usou_outra_instituicao, body.dsc_condicao_habitual, body.dbl_valor_medicamento, body.dat_teve_covid_19, body.flg_medicamento_caro,
+                 body.flg_auxilio_banho, body.flg_auxilio_alimentacao, body.flg_auxilio_locomocao, body.flg_auxilio_vestimenta, body.flg_auxilio_higiene, body.flg_usa_frauda,
+                 body.flg_paciente_lucido, body.flg_fez_cirurgia, body.flg_teve_covid_19, body.num_cartao_sus, body.mem_diagnostico_medico, body.mem_diagnostico_fisioterapico,
+                 body.dsc_diagnostico_fisioterapico_qp, body.dsc_diagnostico_fisioterapico_hma, body.dsc_diagnostico_fisioterapico_hp, body.dsc_diagnostico_fisioterapico_hf,
+                 body.dsc_pressao_arterial, body.dsc_frequencia_cardiaca, body.dsc_frequencia_pulso, body.dsc_frequencia_respiratoria, body.dsc_temperatura_corporal, body.flg_postura_cabeca,
+                 body.flg_postura_ombro, body.flg_postura_clavicula, body.flg_postura_cotovelo, body.flg_postura_antebraco, body.flg_postura_eias, body.flg_postura_joelho,
+                 body.flg_postura_patela, body.flg_postura_pe, body.flg_postura_tornozelo, body.flg_postura_coluna_cervical, body.flg_postura_coluna_toracica, body.flg_postura_coluna_lombar,
+                 body.flg_sistema_osteomioarticular, body.flg_tonus_muscular, body.flg_forca_muscular_mmss, body.flg_forca_muscular_mmii, body.flg_amplitude_muscular, body.dsc_adm_passiva_mmss,
+                 body.dsc_adm_passiva_mmii, body.dsc_adm_ativa_mmss, body.dsc_adm_ativa_mmii, body.dsc_tegumentar_pele, body.flg_tegumentar_elasticidade, body.flg_tegumentar_desidratacao,
+                 body.flg_tegumentar_mancha, body.dsc_local_mancha, body.flg_tegumentar_coloracao, body.dsc_local_coloracao, body.flg_tegumentar_temperatura, body.dsc_local_temperatura,
+                 body.flg_tegumentar_sensibilidade, body.dsc_local_sensibilidade, body.dsc_equilibrio_mao_cabeca, body.dsc_equilibrio_mao_ombro, body.dsc_equilibrio_cruzar_perna,
+                 body.dsc_coordenacao_msd, body.dsc_coordenacao_mse, body.dsc_coordenacao_nariz_msd, body.dsc_coordenacao_nariz_mse, body.dsc_coordenacao_motricidade_fina,
+                 body.dsc_coordenacao_alcance, body.dsc_coordenacao_preensao, body.dsc_coordenacao_manipulacao, body.dsc_coordenacao_cognitivo, body.dsc_coordenacao_psiquiatrico,
+                 body.dsc_coordenacao_psicologico, req.params.cod_conta, req.params.cod_pessoa], (err, result) =>{
     if (err) console.log(err)
     else{
 
     //Se não encontrou - Insere  
       if (result.affectedRows === 0) {
-        SQL  = ' insert into tbl_paciente (fky_conta, fky_pessoa, dsc_filiacao_pai, dsc_filiacao_mae, dsc_religiao, dsc_tipo_renda, dsc_cidade_ant, dat_residencia_cidade, dbl_valor_renda, fky_curador,';
-        SQL +=                           ' flg_estado_civil, flg_frequenta_religiao, flg_possui_filho, flg_possui_casa_propria, flg_possui_renda, flg_paciente_interditado, int_quant_filho,';
-        SQL +=                           ' int_quant_filho_vivo, mem_dados_resguardado, dsc_plano_saude, dsc_paciente_lucido, dsc_cirurgia_feita, dsc_obs_covid_19, dsc_usa_medicamento, dsc_usou_outra_instituicao, dsc_condicao_habitual, dbl_valor_medicamento, dat_teve_covid_19, flg_medicamento_caro, flg_auxilio_banho, flg_auxilio_alimentacao, flg_auxilio_locomocao, flg_auxilio_vestimenta, flg_auxilio_higiene, flg_usa_frauda, flg_paciente_lucido, flg_fez_cirurgia, flg_teve_covid_19, num_cartao_sus)';
-        SQL += ' values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        SQL  = ' insert into tbl_paciente (fky_conta, fky_pessoa, dsc_filiacao_pai, dsc_filiacao_mae, dsc_religiao, dsc_tipo_renda, dsc_cidade_ant, dat_residencia_cidade, dbl_valor_renda,';
+        SQL +=                           ' fky_curador, flg_estado_civil, flg_frequenta_religiao, flg_possui_filho, flg_possui_casa_propria, flg_possui_renda, flg_paciente_interditado,';
+        SQL +=                           ' int_quant_filho, int_quant_filho_vivo, mem_dados_resguardado, dsc_plano_saude, dsc_paciente_lucido, dsc_cirurgia_feita, dsc_obs_covid_19,';
+        SQL +=                           ' dsc_usa_medicamento, dsc_usou_outra_instituicao, dsc_condicao_habitual, dbl_valor_medicamento, dat_teve_covid_19, flg_medicamento_caro,';
+        SQL +=                           ' flg_auxilio_banho, flg_auxilio_alimentacao, flg_auxilio_locomocao, flg_auxilio_vestimenta, flg_auxilio_higiene, flg_usa_frauda, flg_paciente_lucido,';
+        SQL +=                           ' flg_fez_cirurgia, flg_teve_covid_19, num_cartao_sus, mem_diagnostico_medico, mem_diagnostico_fisioterapico, dsc_diagnostico_fisioterapico_qp,';
+        SQL +=                           ' dsc_diagnostico_fisioterapico_hma, dsc_diagnostico_fisioterapico_hp, dsc_diagnostico_fisioterapico_hf, dsc_pressao_arterial, dsc_frequencia_cardiaca,';
+        SQL +=                           ' dsc_frequencia_pulso, dsc_frequencia_respiratoria, dsc_temperatura_corporal, flg_postura_cabeca, flg_postura_ombro, flg_postura_clavicula,';
+        SQL +=                           ' flg_postura_cotovelo, flg_postura_antebraco, flg_postura_eias, flg_postura_joelho, flg_postura_patela, flg_postura_pe, flg_postura_tornozelo,';
+        SQL +=                           ' flg_postura_coluna_cervical, flg_postura_coluna_toracica, flg_postura_coluna_lombar, flg_sistema_osteomioarticular, flg_tonus_muscular,';
+        SQL +=                           ' flg_forca_muscular_mmss, flg_forca_muscular_mmii, flg_amplitude_muscular, dsc_adm_passiva_mmss, dsc_adm_passiva_mmii, dsc_adm_ativa_mmss,';
+        SQL +=                           ' dsc_adm_ativa_mmii, dsc_tegumentar_pele, flg_tegumentar_elasticidade, flg_tegumentar_desidratacao, flg_tegumentar_mancha, dsc_local_mancha,';
+        SQL +=                           ' flg_tegumentar_coloracao, dsc_local_coloracao, flg_tegumentar_temperatura, dsc_local_temperatura, flg_tegumentar_sensibilidade,';
+        SQL +=                           ' dsc_local_sensibilidade, dsc_equilibrio_mao_cabeca, dsc_equilibrio_mao_ombro, dsc_equilibrio_cruzar_perna, dsc_coordenacao_msd, dsc_coordenacao_mse,';
+        SQL +=                           ' dsc_coordenacao_nariz_msd, dsc_coordenacao_nariz_mse, dsc_coordenacao_motricidade_fina, dsc_coordenacao_alcance, dsc_coordenacao_preensao,';
+        SQL +=                           ' dsc_coordenacao_manipulacao, dsc_coordenacao_cognitivo, dsc_coordenacao_psiquiatrico, dsc_coordenacao_psicologico)';
+        SQL += ' values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,';
+        SQL +=         ' ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
         db.query(SQL, [req.params.cod_conta, body.fky_pessoa, body.dsc_filiacao_pai, body.dsc_filiacao_mae, body.dsc_religiao, body.dsc_tipo_renda, body.dsc_cidade_ant, body.dat_residencia_cidade,
                        body.dbl_valor_renda, null, body.flg_estado_civil, body.flg_frequenta_religiao, body.flg_possui_filho, body.flg_possui_casa_propria, body.flg_possui_renda,
                        body.flg_paciente_interditado, body.int_quant_filho, body.int_quant_filho_vivo, body.mem_dados_resguardado, body.dsc_plano_saude, body.dsc_paciente_lucido,
-                       body.dsc_cirurgia_feita, body.dsc_obs_covid_19, body.dsc_usa_medicamento, body.dsc_usou_outra_instituicao, body.dsc_condicao_habitual, body.dbl_valor_medicamento, body.dat_teve_covid_19,
-                       body.flg_medicamento_caro, body.flg_auxilio_banho, body.flg_auxilio_alimentacao, body.flg_auxilio_locomocao, body.flg_auxilio_vestimenta, body.flg_auxilio_higiene,
-                       body.flg_usa_frauda, body.flg_paciente_lucido, body.flg_fez_cirurgia, body.flg_teve_covid_19, body.num_cartao_sus], (err, result) =>{
+                       body.dsc_cirurgia_feita, body.dsc_obs_covid_19, body.dsc_usa_medicamento, body.dsc_usou_outra_instituicao, body.dsc_condicao_habitual, body.dbl_valor_medicamento,
+                       body.dat_teve_covid_19, body.flg_medicamento_caro, body.flg_auxilio_banho, body.flg_auxilio_alimentacao, body.flg_auxilio_locomocao, body.flg_auxilio_vestimenta,
+                       body.flg_auxilio_higiene, body.flg_usa_frauda, body.flg_paciente_lucido, body.flg_fez_cirurgia, body.flg_teve_covid_19, body.num_cartao_sus, body.mem_diagnostico_medico,
+                       body.mem_diagnostico_fisioterapico, body.dsc_diagnostico_fisioterapico_qp, body.dsc_diagnostico_fisioterapico_hma, body.dsc_diagnostico_fisioterapico_hp,
+                       body.dsc_diagnostico_fisioterapico_hf, body.dsc_pressao_arterial, body.dsc_frequencia_cardiaca, body.dsc_frequencia_pulso, body.dsc_frequencia_respiratoria,
+                       body.dsc_temperatura_corporal, body.flg_postura_cabeca, body.flg_postura_ombro, body.flg_postura_clavicula, body.flg_postura_cotovelo, body.flg_postura_antebraco,
+                       body.flg_postura_eias, body.flg_postura_joelho, body.flg_postura_patela, body.flg_postura_pe, body.flg_postura_tornozelo, body.flg_postura_coluna_cervical,
+                       body.flg_postura_coluna_toracica, body.flg_postura_coluna_lombar, body.flg_sistema_osteomioarticular, body.flg_tonus_muscular, body.flg_forca_muscular_mmss,
+                       body.flg_forca_muscular_mmii, body.flg_amplitude_muscular, body.dsc_adm_passiva_mmss, body.dsc_adm_passiva_mmii, body.dsc_adm_ativa_mmss, body.dsc_adm_ativa_mmii,
+                       body.dsc_tegumentar_pele, body.flg_tegumentar_elasticidade, body.flg_tegumentar_desidratacao, body.flg_tegumentar_mancha, body.dsc_local_mancha,
+                       body.flg_tegumentar_coloracao, body.dsc_local_coloracao, body.flg_tegumentar_temperatura, body.dsc_local_temperatura, body.flg_tegumentar_sensibilidade,
+                       body.dsc_local_sensibilidade, body.dsc_equilibrio_mao_cabeca, body.dsc_equilibrio_mao_ombro, body.dsc_equilibrio_cruzar_perna, body.dsc_coordenacao_msd,
+                       body.dsc_coordenacao_mse, body.dsc_coordenacao_nariz_msd, body.dsc_coordenacao_nariz_mse, body.dsc_coordenacao_motricidade_fina, body.dsc_coordenacao_alcance,
+                       body.dsc_coordenacao_preensao, body.dsc_coordenacao_manipulacao, body.dsc_coordenacao_cognitivo, body.dsc_coordenacao_psiquiatrico, body.dsc_coordenacao_psicologico], (err, result) =>{
           if (err) console.log(err)
           else res.send(result.insertid);
         });
