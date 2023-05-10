@@ -616,6 +616,7 @@ app.put("/pessoa/paciente/editar/:cod_conta/:cod_pessoa", (req, res) => {
     //Aba Saude
       SQL +=     ' mem_diagnostico_medico            = ?,';
       SQL +=     ' mem_diagnostico_fisioterapico     = ?,';
+      SQL +=     ' mem_anamnese                      = ?,';
       SQL +=     ' dsc_diagnostico_fisioterapico_qp  = ?,';
       SQL +=     ' dsc_diagnostico_fisioterapico_hma = ?,';
       SQL +=     ' dsc_diagnostico_fisioterapico_hp  = ?,';
@@ -690,7 +691,7 @@ app.put("/pessoa/paciente/editar/:cod_conta/:cod_pessoa", (req, res) => {
                  body.int_quant_filho, body.int_quant_filho_vivo, body.mem_dados_resguardado, body.dsc_plano_saude, body.dsc_paciente_lucido, body.dsc_cirurgia_feita, body.dsc_obs_covid_19,
                  body.dsc_usa_medicamento, body.dsc_usou_outra_instituicao, body.dsc_condicao_habitual, body.dbl_valor_medicamento, body.dat_teve_covid_19, body.flg_medicamento_caro,
                  body.flg_auxilio_banho, body.flg_auxilio_alimentacao, body.flg_auxilio_locomocao, body.flg_auxilio_vestimenta, body.flg_auxilio_higiene, body.flg_usa_frauda,
-                 body.flg_paciente_lucido, body.flg_fez_cirurgia, body.flg_teve_covid_19, body.num_cartao_sus, body.mem_diagnostico_medico, body.mem_diagnostico_fisioterapico,
+                 body.flg_paciente_lucido, body.flg_fez_cirurgia, body.flg_teve_covid_19, body.num_cartao_sus, body.mem_diagnostico_medico, body.mem_diagnostico_fisioterapico, body.mem_anamnese,
                  body.dsc_diagnostico_fisioterapico_qp, body.dsc_diagnostico_fisioterapico_hma, body.dsc_diagnostico_fisioterapico_hp, body.dsc_diagnostico_fisioterapico_hf,
                  body.dsc_pressao_arterial, body.dsc_frequencia_cardiaca, body.dsc_frequencia_pulso, body.dsc_frequencia_respiratoria, body.dsc_temperatura_corporal, body.flg_postura_cabeca,
                  body.flg_postura_ombro, body.flg_postura_clavicula, body.flg_postura_cotovelo, body.flg_postura_antebraco, body.flg_postura_eias, body.flg_postura_joelho,
@@ -712,7 +713,7 @@ app.put("/pessoa/paciente/editar/:cod_conta/:cod_pessoa", (req, res) => {
         SQL +=                           ' int_quant_filho, int_quant_filho_vivo, mem_dados_resguardado, dsc_plano_saude, dsc_paciente_lucido, dsc_cirurgia_feita, dsc_obs_covid_19,';
         SQL +=                           ' dsc_usa_medicamento, dsc_usou_outra_instituicao, dsc_condicao_habitual, dbl_valor_medicamento, dat_teve_covid_19, flg_medicamento_caro,';
         SQL +=                           ' flg_auxilio_banho, flg_auxilio_alimentacao, flg_auxilio_locomocao, flg_auxilio_vestimenta, flg_auxilio_higiene, flg_usa_frauda, flg_paciente_lucido,';
-        SQL +=                           ' flg_fez_cirurgia, flg_teve_covid_19, num_cartao_sus, mem_diagnostico_medico, mem_diagnostico_fisioterapico, dsc_diagnostico_fisioterapico_qp,';
+        SQL +=                           ' flg_fez_cirurgia, flg_teve_covid_19, num_cartao_sus, mem_diagnostico_medico, mem_diagnostico_fisioterapico, mem_anamnese, dsc_diagnostico_fisioterapico_qp,';
         SQL +=                           ' dsc_diagnostico_fisioterapico_hma, dsc_diagnostico_fisioterapico_hp, dsc_diagnostico_fisioterapico_hf, dsc_pressao_arterial, dsc_frequencia_cardiaca,';
         SQL +=                           ' dsc_frequencia_pulso, dsc_frequencia_respiratoria, dsc_temperatura_corporal, flg_postura_cabeca, flg_postura_ombro, flg_postura_clavicula,';
         SQL +=                           ' flg_postura_cotovelo, flg_postura_antebraco, flg_postura_eias, flg_postura_joelho, flg_postura_patela, flg_postura_pe, flg_postura_tornozelo,';
@@ -724,7 +725,7 @@ app.put("/pessoa/paciente/editar/:cod_conta/:cod_pessoa", (req, res) => {
         SQL +=                           ' dsc_coordenacao_nariz_msd, dsc_coordenacao_nariz_mse, dsc_coordenacao_motricidade_fina, dsc_coordenacao_alcance, dsc_coordenacao_preensao,';
         SQL +=                           ' dsc_coordenacao_manipulacao, dsc_coordenacao_cognitivo, dsc_coordenacao_psiquiatrico, dsc_coordenacao_psicologico)';
         SQL += ' values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,';
-        SQL +=         ' ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        SQL +=         ' ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
         db.query(SQL, [req.params.cod_conta, body.fky_pessoa, body.dsc_filiacao_pai, body.dsc_filiacao_mae, body.dsc_religiao, body.dsc_tipo_renda, body.dsc_cidade_ant, body.dat_residencia_cidade,
                        body.dbl_valor_renda, null, body.flg_estado_civil, body.flg_frequenta_religiao, body.flg_possui_filho, body.flg_possui_casa_propria, body.flg_possui_renda,
@@ -732,7 +733,7 @@ app.put("/pessoa/paciente/editar/:cod_conta/:cod_pessoa", (req, res) => {
                        body.dsc_cirurgia_feita, body.dsc_obs_covid_19, body.dsc_usa_medicamento, body.dsc_usou_outra_instituicao, body.dsc_condicao_habitual, body.dbl_valor_medicamento,
                        body.dat_teve_covid_19, body.flg_medicamento_caro, body.flg_auxilio_banho, body.flg_auxilio_alimentacao, body.flg_auxilio_locomocao, body.flg_auxilio_vestimenta,
                        body.flg_auxilio_higiene, body.flg_usa_frauda, body.flg_paciente_lucido, body.flg_fez_cirurgia, body.flg_teve_covid_19, body.num_cartao_sus, body.mem_diagnostico_medico,
-                       body.mem_diagnostico_fisioterapico, body.dsc_diagnostico_fisioterapico_qp, body.dsc_diagnostico_fisioterapico_hma, body.dsc_diagnostico_fisioterapico_hp,
+                       body.mem_diagnostico_fisioterapico, body.mem_anamnese, body.dsc_diagnostico_fisioterapico_qp, body.dsc_diagnostico_fisioterapico_hma, body.dsc_diagnostico_fisioterapico_hp,
                        body.dsc_diagnostico_fisioterapico_hf, body.dsc_pressao_arterial, body.dsc_frequencia_cardiaca, body.dsc_frequencia_pulso, body.dsc_frequencia_respiratoria,
                        body.dsc_temperatura_corporal, body.flg_postura_cabeca, body.flg_postura_ombro, body.flg_postura_clavicula, body.flg_postura_cotovelo, body.flg_postura_antebraco,
                        body.flg_postura_eias, body.flg_postura_joelho, body.flg_postura_patela, body.flg_postura_pe, body.flg_postura_tornozelo, body.flg_postura_coluna_cervical,
