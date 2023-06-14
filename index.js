@@ -725,7 +725,7 @@ app.put("/pessoa/paciente/editar/:cod_conta/:cod_pessoa", (req, res) => {
         SQL +=                           ' dsc_coordenacao_nariz_msd, dsc_coordenacao_nariz_mse, dsc_coordenacao_motricidade_fina, dsc_coordenacao_alcance, dsc_coordenacao_preensao,';
         SQL +=                           ' dsc_coordenacao_manipulacao, dsc_coordenacao_cognitivo, dsc_coordenacao_psiquiatrico, dsc_coordenacao_psicologico)';
         SQL += ' values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,';
-        SQL +=         ' ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        SQL +=         ' ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
         db.query(SQL, [req.params.cod_conta, body.fky_pessoa, body.dsc_filiacao_pai, body.dsc_filiacao_mae, body.dsc_religiao, body.dsc_tipo_renda, body.dsc_cidade_ant, body.dat_residencia_cidade,
                        body.dbl_valor_renda, null, body.flg_estado_civil, body.flg_frequenta_religiao, body.flg_possui_filho, body.flg_possui_casa_propria, body.flg_possui_renda,
@@ -847,5 +847,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(5000, ()=>{
-  console.log('Servidor Web no ar na porta 5000 - Versao 2');
+  console.log('Servidor Web no ar na porta 5000 - Versao 1.003');
 });
