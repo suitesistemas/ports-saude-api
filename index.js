@@ -1,7 +1,7 @@
-import express    from "express";
-import mysql      from "mysql";
-import cors       from "cors";
-import headers    from "./next.config.js";
+import express from "express";
+import mysql   from "mysql";
+import cors    from "cors";
+import headers from "./next.config.js";
 
 const app = express();
 app.use(cors());
@@ -14,15 +14,6 @@ const db = mysql.createPool({
 });
 
 headers();
-
-{/*app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin",  "*");
-  res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
-  res.header("Access-Control-Allow-Headers", "X-PINGOTHER, Content-Type, Authorization, cod_conta");
-  //req.header("Access-Control-Allow-Headers", "X-PINGOTHER, Content-Type, Authorization, cod_conta");
-
-  next();
-});*/}
 
 app.use(express.static('public/upload')); //Libera acesso a pasta de imagens*/
 
@@ -550,6 +541,68 @@ app.delete("/pessoa/programa_social/excluir/:cod_conta/:fky_paciente/:fky_progra
   });
 });
 
+//****** Pessoa Anamnese ******/
+
+//tbl_paciente_anamnese - Listar por pessoa
+app.get("/pessoa/anamnese/listar/:cod_conta/:cod_pessoa", (req, res) => {
+  let SQL  = ' select cod_sequencia  cod_registro,';
+      SQL +=        ' mem_anamnese   dsc_registro';
+      SQL += ' from   tbl_paciente_anamnese';
+      SQL += ' where  fky_conta  = ?';
+      SQL +=   ' and  fky_paciente = ?';
+      SQL +=  'order by cod_sequencia desc'
+
+  db.query(SQL, [req.params.cod_conta, req.params.cod_pessoa], (err, result) =>{
+    if (err) console.log(err)
+    else res.send(result);
+  });
+});
+
+/*tbl_paciente_anamnese - Inserir*/
+app.post("/pessoa/anamnese/inserir/:cod_conta", (req, res) => {
+  const body = req.body;
+  let   lSequencia = 0;
+
+  let SQL  = ' select max(cod_sequencia) cod_sequencia';
+      SQL += ' from   tbl_paciente_anamnese';
+      SQL += ' where  fky_conta    = ?';
+      SQL +=   ' and  fky_paciente = ?';
+  
+  db.query(SQL, [req.params.cod_conta, body.fky_paciente], (err, result) =>{
+    if (err) console.log(err)
+    else{
+      if (result.length == 0){
+           lSequencia = 1;
+      }
+      else{
+        lSequencia = result[0].cod_sequencia + 1;
+      }
+
+      SQL  = ' insert into tbl_paciente_anamnese (fky_conta, fky_paciente, cod_sequencia, mem_anamnese)';
+      SQL += ' values (?, ?, ?, ?)';
+      
+      db.query(SQL, [req.params.cod_conta, body.fky_paciente, lSequencia, body.mem_anamnese], (err, result) =>{
+        if (err) console.log(err)
+        else     res.send(result.insertid);
+      });
+    } 
+  });
+});
+
+//tbl_paciente_anamnese - Excluir
+app.delete("/pessoa/anamnese/excluir/:cod_conta/:fky_paciente/:cod_seq_anamnese", (req, res) => {
+  let SQL  = ' delete from tbl_paciente_anamnese';
+      SQL += ' where fky_conta     = ?';
+      SQL += '   and fky_paciente  = ?';
+      SQL += '   and cod_sequencia = ?'
+
+  db.query(SQL, [req.params.cod_conta, req.params.fky_paciente, req.params.cod_seq_anamnese], (err, result) =>{
+    if (err) console.log(err)
+    else res.send(result);
+  });
+});
+
+
 /****** Paciente ******/
 
 //tbl_paciente - Listar - Dados do Paciente - 1 Registro
@@ -847,5 +900,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(5000, ()=>{
-  console.log('Servidor Web no ar na porta 5000 - Versao 1.003');
+  console.log('Servidor Web no ar na porta 5000 - Versao 1.004');
 });
